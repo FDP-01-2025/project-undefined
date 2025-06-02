@@ -1,29 +1,31 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/mi1WNrHU)
-# Proyecto de C++ - [Nombre del Juego]
+# Proyecto de C++ - DIDE'S PALACE
 
 ## Descripción del Proyecto
 
 Breve descripción del juego, su propósito, cómo se juega y cualquier otro detalle importante que describa la idea general del proyecto.
 
-**Por ejemplo:**
-Este proyecto consiste en un juego de aventuras donde el jugador debe explorar un mundo virtual, recoger objetos, resolver acertijos y enfrentar enemigos. El juego utiliza estructuras de control como `if`, `switch`, y bucles `while` y `for` para generar interacciones dinámicas.
+Dice’s palace es parecido a un juego de laberinto, donde el jugador se encontrará atrapado en un 
+castillo y su objetivo será buscar el camino para poder salir, pero con un giro distinto, dado que el 
+principal factor será la suerte del jugador. 
 
 ## Equipo
 
-- **Nombre del equipo:** [Nombre del equipo]
+- **Nombre del equipo:** Undefined
 
 ### Integrantes del equipo
 
-1. **Nombre completo:** [Nombre del estudiante 1]  
-   **Carnet:** [Carnet del estudiante 1]
+1. **Nombre completo:** Susan Abigail Castillo Oliva 
+   **Carnet:** 00221125
 
-2. **Nombre completo:** [Nombre del estudiante 2]  
-   **Carnet:** [Carnet del estudiante 2]
+2. **Nombre completo:** Daniel Alexander Espinal Echegoyen   
+   **Carnet:** 00100725
 
-3. **Nombre completo:** [Nombre del estudiante 3]  
-   **Carnet:** [Carnet del estudiante 3]
+3. **Nombre completo:** Francisco Javier Guadrón Vásquez 
+   **Carnet:** 00077225 
 
-(Agregar más integrantes si es necesario)
+4. **Nombre completo:** Eduardo Josué Guerra Sagastizado
+   **Carnet:** 00043625 
 
 ## Instrucciones de Ejecución
 
