@@ -1,0 +1,10 @@
+#Carpetas ocupadas en caso se ocupe compilar con CMake.
+#Carpeta donde se contruye el compilador
+build/
+#Carpeta donde se crear el archivo ejecutable
+bin/
+#Configuraciones para la compilación usando CMake.
+CMakeLists.txt
+
+##################################################
+.vscode/
