@@ -3,8 +3,6 @@
 build/
 #Carpeta donde se crear el archivo ejecutable
 bin/
-#Configuraciones para la compilación usando CMake.
-CMakeLists.txt
 
 ##################################################
 .vscode/

@@ -1,3 +1,4 @@
+#ifndef MAZE_H
 /* Estructura para los laberintos y funciones */
 #pragma once
 
@@ -21,3 +22,5 @@ typedef struct Maze
 // FUNCIONES (Se implementaran en el maze.cpp)
 void loadMazeFromFile(Maze *maze, const char *filePath);
 void drawMaze(const Maze *maze);
+
+#endif
