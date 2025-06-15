@@ -1,13 +1,12 @@
 #ifndef MAZE_H
-/* Estructura para los laberintos y funciones */
-#pragma once
+#define MAZE_H
 
 //Definición de tamaños máximos del laberinto
 #define MAX_ROWS 50 //Filas
 #define MAX_COLS 50 //Columnas
 
 //Estructura que guarda el contenido del laberinto
-typedef struct Maze
+struct Maze
 {
     // Matriz del laberinto
     char grid[MAX_ROWS][MAX_COLS];

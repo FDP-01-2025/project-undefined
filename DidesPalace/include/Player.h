@@ -1,4 +1,5 @@
 #ifndef PLAYER_H
+#define PLATER_H
 
 #include "maze.h"
 

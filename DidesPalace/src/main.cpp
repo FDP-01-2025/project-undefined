@@ -15,7 +15,6 @@ int main () {
 
     //Se carga el laberinto (Parametros que recibe: Instancia de Maze y la ruta del archivo)
     loadMazeFromFile(&maze, "data/levels/level1_map.txt");
-    cout << "=== Laberinto ===\n";
         
    //Se ejecuta este bloque de codigo siempre, a menos que se presione q.
     while(true){
@@ -23,6 +22,7 @@ int main () {
         system("cls");
 
         //Dibuja el laberinto en consola (Parametros: Instancia de maze)
+        cout << "=== Laberinto ===\n";
         drawMaze(&maze);
 
         cout << "\nUsa W/A/S/D para moverte. Q para salir.\n";
