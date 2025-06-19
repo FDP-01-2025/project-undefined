@@ -1,43 +1,58 @@
 #include <iostream>
 #include <locale.h>
 #include <windows.h>
+// Captura letras sin esperar el enter
 #include <conio.h>
-#include "maze.h"
-#include "player.h"
+#include "levels/level1.h"
 
 using namespace std;
 
-int main () {
-    //Se crea una instancia de Maze 
-    Maze maze;
-    //Permite mostrar caracteres especiales
-    SetConsoleOutputCP(CP_UTF8); 
+// Funcion que muestra el menu de inicio.
+void showMenu()
+{
+    cout << "=== MENU PRINCIPAL ===" << endl;
+    cout << "1. Empezar" << endl;
+    cout << "ESC. Salir del juego" << endl;
+    cout << "Seleccione una opción: ";
+}
 
-    //Se carga el laberinto (Parametros que recibe: Instancia de Maze y la ruta del archivo)
-    loadMazeFromFile(&maze, "data/levels/level1_map.txt");
-        
-   //Se ejecuta este bloque de codigo siempre, a menos que se presione q.
-    while(true){
-        //Se limpia la consola
+int main()
+{
+
+    // Permite mostrar caracteres especiales
+    SetConsoleOutputCP(CP_UTF8);
+
+    // Se ejecuta este bloque de codigo siempre, a menos que se presione esc.
+    while (true)
+    {
         system("cls");
+        showMenu();
 
-        //Dibuja el laberinto en consola (Parametros: Instancia de maze)
-        cout << "=== Laberinto ===\n";
-        drawMaze(&maze);
+        char option = _getch();
+        // Bandera que permitira salir o no del juego
+        // Si quitGame es true sale del juego (Cuando se presiona esc)
+        // Si quitGame es false sigue en el juego
+        bool quitGame = false;
 
-        cout << "\nUsa W/A/S/D para moverte. Q para salir.\n";
-        
-        //Se muestran las posiciones del jugador
-        cout << "\nPosicion inicial del jugador: (" << maze.playerX << ", " << maze.playerY << ")" << endl;
+        switch (option)
+        {
+        case '1':
+            quitGame = Level1();
+            break;
+        // Tecla ESC
+        case 27:
+            quitGame = true;
+            break;
+        }
 
-        //Captura la letra que presiono el usuario
-        char key = _getch();
-        //Si la letra presionada es q se termina el programa.
-        if (key == 'q') break;
-        
-        //Funcion que permite el movimiento (Parametros que recibe: Instancia de maze y la letra capturada)
-        movePlayer(&maze, key);
-
+        // Si quitGame es verdadera sale del bucle
+        if (quitGame)
+        {
+            cout << "\nSaliendo del juego...\n";
+            // Se sale del bucle
+            break;
+        }
     }
+
     return 0;
 }

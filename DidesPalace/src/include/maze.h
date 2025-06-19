@@ -19,7 +19,9 @@ struct Maze
 };
 
 // FUNCIONES (Se implementaran en el maze.cpp)
-void loadMazeFromFile(Maze *maze, const char *filePath);
-void drawMaze(const Maze *maze);
+void loadMazeFromFile(Maze &maze, const char *filePath);
+void drawMaze(const Maze &maze);
+bool isWall(const Maze &maze, int y, int x);
+char typeWall(const Maze &maze, int y, int x);
 
 #endif

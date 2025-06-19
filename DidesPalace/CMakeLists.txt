@@ -10,7 +10,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 # Incluir directorios
 # Carpeta include (Estan todos los archivos .h)
-include_directories(include)
+include_directories(src/include)
 
 # Archivos fuente
 # Agregar aqui los archivos nuevos que se vayan creando
