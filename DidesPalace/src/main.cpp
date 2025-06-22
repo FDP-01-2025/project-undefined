@@ -3,18 +3,10 @@
 #include <windows.h>
 // Captura letras sin esperar el enter
 #include <conio.h>
+#include "menu.h"
 #include "levels/level1.h"
 
 using namespace std;
-
-// Funcion que muestra el menu de inicio.
-void showMenu()
-{
-    cout << "=== MENU PRINCIPAL ===" << endl;
-    cout << "1. Empezar" << endl;
-    cout << "ESC. Salir del juego" << endl;
-    cout << "Seleccione una opción: ";
-}
 
 int main()
 {

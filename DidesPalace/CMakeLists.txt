@@ -17,6 +17,7 @@ include_directories(src/include)
 set(SOURCES
     "src/main.cpp"
     "src/maze.cpp"
+    "src/menu.cpp"
     "src/player.cpp"
     "src/miniGames/1_riddles.cpp"
     "src/miniGames/2_spotDifference.cpp"
