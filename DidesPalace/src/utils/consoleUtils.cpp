@@ -2,10 +2,10 @@
 #include <utils/consoleUtils.h>
 
 // // Función para mover el cursor
-// void moveCursor(int x, int y) {
-//     COORD coord = { (SHORT)x, (SHORT)y };
-//     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-// }
+void moveCursor(int x, int y) {
+    COORD coord = { (SHORT)x, (SHORT)y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
 // Función para configurar la consola
 void consoleSettings()

@@ -3,7 +3,7 @@
 #include <windows.h>
 // Captura letras sin esperar el enter
 #include <conio.h>
-#include "menu.h"
+#include "utils/menu.h"
 #include "levels/level1.h"
 
 using namespace std;

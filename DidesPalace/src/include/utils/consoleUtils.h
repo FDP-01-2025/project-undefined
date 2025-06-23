@@ -16,6 +16,6 @@ const WORD COLOR_STATS = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSI
 //Funciones implementadas en consoleUtils.cpp
 void consoleSettings();
 void consoleCenter();
-//void moveCursor(int x, int y);
+void moveCursor(int x, int y);
 
 #endif

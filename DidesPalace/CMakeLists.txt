@@ -17,7 +17,6 @@ include_directories(src/include)
 set(SOURCES
     "src/main.cpp"
     "src/maze.cpp"
-    "src/menu.cpp"
     "src/player.cpp"
     "src/miniGames/1_riddles.cpp"
     "src/miniGames/2_spotDifference.cpp"
@@ -28,6 +27,7 @@ set(SOURCES
     "src/levels/level3.cpp"
     "src/levels/level4.cpp"
     "src/utils/consoleUtils.cpp"
+    "src/utils/menu.cpp"
 )
 
 # Crear el ejecutable principal
