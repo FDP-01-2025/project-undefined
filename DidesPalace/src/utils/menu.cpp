@@ -58,7 +58,8 @@ void showMenu() {
     }
 
     string opt1 = "1. Empezar";
-    string opt2 = "ESC. Salir del juego";
+    string opt2 = "2. Nivel dos";
+    string opt3 = "ESC. Salir del juego";
     string prompt = "";
 
     y += 2;
@@ -68,6 +69,9 @@ void showMenu() {
 
     moveCursor((WINDOW_WIDHT - opt2.size()) / 2, y++);
     cout << opt2;
+
+    moveCursor((WINDOW_WIDHT - opt3.size()) / 2, y++);
+    cout << opt3;
 
     moveCursor((WINDOW_WIDHT - prompt.size()) / 2, y++);
     cout << prompt;

@@ -5,6 +5,7 @@
 #include <conio.h>
 #include "utils/menu.h"
 #include "levels/level1.h"
+#include "levels/level2.h"
 
 using namespace std;
 
@@ -30,6 +31,9 @@ int main()
         {
         case '1':
             quitGame = Level1();
+            break;
+        case '2':
+            quitGame = Level2();
             break;
         // Tecla ESC
         case 27:
