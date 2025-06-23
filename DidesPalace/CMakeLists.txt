@@ -18,6 +18,7 @@ set(SOURCES
     "src/main.cpp"
     "src/maze.cpp"
     "src/player.cpp"
+    "src/bosses.cpp"
     "src/miniGames/1_riddles.cpp"
     "src/miniGames/2_spotDifference.cpp"
     "src/miniGames/3_numberSort.cpp"

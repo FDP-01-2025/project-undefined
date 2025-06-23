@@ -1,1 +1,4 @@
-/* Struct del Jefe y funciones */
+#pragma once
+bool startBossBattle();
+bool fightRegularEnemy();
+bool bossBattleRPG();

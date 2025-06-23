@@ -4,6 +4,7 @@
 #include <conio.h>
 #include "maze.h"
 #include "player.h"
+#include "bosses.h"
 #include "levels/level2.h"
 using namespace std;
 
@@ -24,9 +25,9 @@ bool Level2()
     Maze maze;
 
     // Se carga el laberinto (Parametros que recibe: Instancia de Maze y la ruta del archivo)
-    loadMazeFromFile(maze, "data/levels/level1_map.txt");
+    loadMazeFromFile(maze, "data/levels/level2_map.txt");
 
-    cout << "==== NIVEL 1 =====";
+    cout << "==== NIVEL 2 =====";
     // Dibujar el laberinto inicial
     //Parametros que se le pasa: Instancia de maze y el color que van a tener las paredes del laberinto
     drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
@@ -51,12 +52,9 @@ bool Level2()
             // Solo redibujar si hubo movimiento válido
             drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
-            // Si logra llegar al jefe (B) pasa al mini juego
-            if (maze.grid[maze.playerY][maze.playerX] == 'B') // Si llega al jefe
-            {
-                cout << "\n¡Nivel completado!\n";
-                system("pause");
-                return false;
+            if (maze.grid[maze.playerY][maze.playerX] == 'B') {
+                bossBattleRPG();
+                return false; // Si sobrevive, termina el nivel
             }
         }
         
