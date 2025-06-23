@@ -5,6 +5,8 @@
 #define MAX_ROWS 50 //Filas
 #define MAX_COLS 50 //Columnas
 
+#include <windows.h>
+
 //Estructura que guarda el contenido del laberinto
 struct Maze
 {
@@ -20,7 +22,7 @@ struct Maze
 
 // FUNCIONES (Se implementaran en el maze.cpp)
 void loadMazeFromFile(Maze &maze, const char *filePath);
-void drawMaze(const Maze &maze);
+void drawMaze(const Maze &maze, WORD wallColor);
 bool isWall(const Maze &maze, int y, int x);
 char typeWall(const Maze &maze, int y, int x);
 

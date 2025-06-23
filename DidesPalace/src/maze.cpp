@@ -1,11 +1,17 @@
-#include "maze.h"  //
-#include <stdio.h> //Libreria que permite acceder a archivos externos (FILE)
+#include "maze.h"
+#include <stdio.h>
 #include <string.h>
 #include <iostream>
 #include <windows.h>
+#include <utils/consoleUtils.h>
+#include <menu.h>
 using namespace std;
 
-// Funcion que carga el laberinto del archivo de texto
+// Variables para centrado
+int marginX = 0;
+int marginY = 0;
+
+// Función que carga el laberinto del archivo de texto
 void loadMazeFromFile(Maze &maze, const char *filePath)
 {
     // Se abre el archivo de texto que contiene el laberinto
@@ -29,10 +35,14 @@ void loadMazeFromFile(Maze &maze, const char *filePath)
     {
         // Elimina salto de linea si existe
         line[strcspn(line, "\n")] = '\0';
-
         // Copia la linea a la matriz
         strcpy(maze.grid[maze.rows], line);
-        maze.cols = strlen(line); // Todas las filas deber tener el mismo ancho
+
+        if (maze.cols == 0)
+        {
+            // Todas las filas deber tener el mismo ancho
+            maze.cols = strlen(line);
+        }
 
         // Buscar el jugador (P) y jefe (B)
         // Se recorre cada caracter para encontrar la posicion de P y B
@@ -53,6 +63,10 @@ void loadMazeFromFile(Maze &maze, const char *filePath)
     }
     // Se cierra el archivo
     fclose(file);
+
+    // Calcular márgenes para centrado
+    marginX = (WINDOW_WIDHT - maze.cols - 25) / 2;
+    marginY = (WINDOW_HEIGHT - maze.rows) / 2;
 }
 
 // Funcion que verifica si la celda (x,y) es una pared #.
@@ -61,7 +75,7 @@ bool isWall(const Maze &maze, int y, int x)
     return x >= 0 && x < maze.cols && y >= 0 && y < maze.rows && maze.grid[y][x] == '#';
 }
 
-// Funcion que decide que simbolo grafico se usa para una pared
+// Funcion para determinar el tipo de pared (visual)
 char typeWall(const Maze &maze, int y, int x)
 {
     // Si no es pared devuelve un espacio.
@@ -82,14 +96,20 @@ char typeWall(const Maze &maze, int y, int x)
     return '#';
 }
 
-// Funcion que muestra el laberinto en consola.
-void drawMaze(const Maze &maze)
+// Función para dibujar el laberinto
+void drawMaze(const Maze &maze, WORD wallColor)
 {
     // Permite el cambio de colores en la consola
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord;
 
+    // Dibuja el laberinto
     for (int y = 0; y < maze.rows; ++y)
     {
+        coord.X = marginX;
+        coord.Y = marginY + y;
+        SetConsoleCursorPosition(hConsole, coord);
+
         for (int x = 0; x < maze.cols; ++x)
         {
             // Obtiene el caracter actual del laberinto (x,y)
@@ -99,47 +119,40 @@ void drawMaze(const Maze &maze)
             // Verifica si es la celda donde esta el jugador
             if (x == maze.playerX && y == maze.playerY)
             {
-                // Cambia el color a rojo.
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+                SetConsoleTextAttribute(hConsole, COLOR_PLAYER);
                 cout << "♡";
-                // Si es pared
             }
             else if (c == '#')
             {
-                // Cambia a color blanco.
-                SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY);
+                SetConsoleTextAttribute(hConsole, wallColor);
                 // Dibuja '|' o '-', esto depende de la forma (Funcion isWallet)
                 cout << typeWall(maze, y, x);
-                // Si es el jefe
             }
             else if (c == 'B')
             {
-                // Cambia a color verde
-                SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                SetConsoleTextAttribute(hConsole, COLOR_BOSS);
                 cout << 'B';
-                // Para cualquier otro caracter
             }
             else
             {
-                // Cambia a color blanco
-                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-                // Imprime el caracter original
+                SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
                 cout << c;
             }
         }
 
-        cout << "   ";
-        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+        // Dibuja las instrucciones que salen a la par del laberinto
+        coord.X = marginX + maze.cols + 2;
+        SetConsoleCursorPosition(hConsole, coord);
+        SetConsoleTextAttribute(hConsole, COLOR_STATS);
 
         // Se muestran las instrucciones del lado del laberinto
         switch (y)
         {
         case 0:
-            SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
             cout << "=== Estado del jugador ===";
             break;
         case 2:
-            cout << "Posicion: (" << maze.playerX << "," << maze.playerY << ")";
+            cout << "Pos: (" << maze.playerX << "," << maze.playerY << ")";
             break;
         case 4:
             cout << "Controles:";
@@ -164,9 +177,8 @@ void drawMaze(const Maze &maze)
             cout << " ";
             break;
         }
-        cout << endl;
     }
 
     // Restaura a los colores originales
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
 }

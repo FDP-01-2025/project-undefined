@@ -4,6 +4,6 @@
 #include "maze.h"
 
 //Declaracion de funciones (Utilizadas en player.cpp)
-void movePlayer(Maze &maze, char direction);
+bool movePlayer(Maze &maze, char direction);
 
 #endif
