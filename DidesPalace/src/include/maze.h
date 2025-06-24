@@ -2,8 +2,8 @@
 #define MAZE_H
 
 //Definición de tamaños máximos del laberinto
-#define MAX_ROWS 50 //Filas
-#define MAX_COLS 50 //Columnas
+#define MAX_ROWS 70 //Filas
+#define MAX_COLS 70 //Columnas
 
 #include <windows.h>
 

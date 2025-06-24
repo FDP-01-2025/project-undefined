@@ -6,6 +6,7 @@
 #include "utils/menu.h"
 #include "levels/level1.h"
 #include "levels/level2.h"
+#include "levels/level4.h"
 
 using namespace std;
 
@@ -35,6 +36,9 @@ int main()
         case '2':
             quitGame = Level2();
             break;
+         case '4':
+            quitGame = Level4();
+            break;    
         // Tecla ESC
         case 27:
             quitGame = true;

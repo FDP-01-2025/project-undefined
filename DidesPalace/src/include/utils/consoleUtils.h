@@ -4,8 +4,8 @@
 #include <windows.h>
 
 // Configuración de la ventana
-const int WINDOW_WIDHT = 100;
-const int WINDOW_HEIGHT = 30;
+const int WINDOW_WIDHT = 150;
+const int WINDOW_HEIGHT = 40;
 
 // Colores de consola
 const WORD COLOR_DEFAULT = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
