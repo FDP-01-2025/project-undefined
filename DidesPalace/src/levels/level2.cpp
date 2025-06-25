@@ -6,6 +6,7 @@
 #include "player.h"
 #include "bosses.h"
 #include "levels/level2.h"
+#include "./minigames/2_spotDifference.h"
 using namespace std;
 
 bool Level2()
@@ -53,7 +54,7 @@ bool Level2()
             drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
-                bossBattleRPG();
+                bossBattleRPG(playSpotDifference);
                 return false; // Si sobrevive, termina el nivel
             }
         }

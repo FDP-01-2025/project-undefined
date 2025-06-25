@@ -31,5 +31,5 @@ bool playSpotDifference(int posX = 0, int posY = 0) {
         cout << string(60, ' ');
     }
 
-    return (input == "fly");
+    return (input == "Hola" || input == "ola");
 }

@@ -1,4 +1,4 @@
 #pragma once
 bool startBossBattle();
 bool fightRegularEnemy();
-bool bossBattleRPG();
+void bossBattleRPG(bool (*minigame)(int, int));
