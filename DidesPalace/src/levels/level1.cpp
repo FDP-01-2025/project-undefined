@@ -4,7 +4,9 @@
 #include <conio.h>
 #include "maze.h"
 #include "player.h"
+#include "bosses.h"
 #include "levels/level1.h"
+#include "./minigames/1_riddles.h"
 using namespace std;
 
 bool Level1()
@@ -51,12 +53,9 @@ bool Level1()
             // Solo redibujar si hubo movimiento válido
             drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
-            // Si logra llegar al jefe (B) pasa al mini juego
-            if (maze.grid[maze.playerY][maze.playerX] == 'B') // Si llega al jefe
-            {
-                cout << "\n¡Nivel completado!\n";
-                system("pause");
-                return false;
+            if (maze.grid[maze.playerY][maze.playerX] == 'B') {
+                bossBattleRPG(playriddles);
+                return false; // Si sobrevive, termina el nivel
             }
         }
         
