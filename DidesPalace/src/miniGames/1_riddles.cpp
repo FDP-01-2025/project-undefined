@@ -65,13 +65,14 @@ namespace {
         cout << text;
     }
 }
-
 bool playriddles(int posX, int posY) {
     // Clear area for our frames
-    system("cls"); // Or use more precise clearing if needed
+    system("cls");
 
-    // Draw main container frame
+    // Draw main container frame (green)
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green text
     drawFrame(posX, posY, 60, 20, " ADIVINANZA ");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
     // Select random question
     random_device rd;
@@ -79,18 +80,22 @@ bool playriddles(int posX, int posY) {
     uniform_int_distribution<> dist(0, PREGUNTAS.size() - 1);
     auto pregunta = PREGUNTAS[dist(gen)];
 
-    // Draw question frame (centered in main frame)
+    // Draw question frame (red)
     int questionFrameX = posX + 5;
     int questionFrameY = posY + 3;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Red text
     drawFrame(questionFrameX, questionFrameY, 50, 5, " PREGUNTA ");
     centerTextInFrame(questionFrameX, questionFrameY, 50, 5, pregunta.first);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
-    // Draw answer input frame
+    // Draw answer input frame (blue)
     int answerFrameX = posX + 5;
     int answerFrameY = posY + 10;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9); // Blue text
     drawFrame(answerFrameX, answerFrameY, 50, 5, " RESPUESTA ");
     moveCursor(answerFrameX + 10, answerFrameY + 2);
     cout << "> ";
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default for input
 
     // Get answer with timer
     auto start = high_resolution_clock::now();
@@ -106,17 +111,37 @@ bool playriddles(int posX, int posY) {
     // Draw result frame
     int resultFrameX = posX + 5;
     int resultFrameY = posY + 16;
-    drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
-
+    
     if (timeOut) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14); // Yellow for timeout
+        drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, "¡Tiempo agotado!");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         return false;
     } else if (isCorrect) {
+        // Draw victory frame on the right side
+        int victoryX = posX + 65;  // Positioned to the right of the main frame
+        int victoryY = posY;
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green
+        drawFrame(victoryX, victoryY, 30, 3, " VICTORIA ");
+        centerTextInFrame(victoryX, victoryY, 30, 3, "EL jefe ha sido vencido.");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+
+        // Show correct answer message in main frame
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green for correct
+        drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, "¡Correcto!");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         return true;
     } else {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Red for incorrect
+        drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
         string resultText = "¡Incorrecto! La respuesta era: " + pregunta.second;
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, resultText);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         return false;
     }
 }
+
+
+
