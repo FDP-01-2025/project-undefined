@@ -84,7 +84,7 @@ void showBossArt(const string& path, int x, int y) {
 
 // Función principal del sistema de batalla RPG con jefe
 void bossBattleRPG(bool (*minigame)(int, int)) {
-    int bossHP = 1;
+    int bossHP = 100;  // Cambiado de 1 a 100
     int playerHP = 100;
     bool bossDefeated = false;
 
@@ -142,8 +142,12 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
             bool won = minigame(15, 15);
 
             if (won) {
-                bossHP = 0;
-                bossDefeated = true;
+                bossHP -= 25;  // Reduce 25 puntos de vida en lugar de derrotar inmediatamente
+                if (bossHP <= 0) {
+                    bossHP = 0;
+                    bossDefeated = true;
+                }
+                showMessageBox("¡Has acertado el minijuego! El jefe pierde 25 puntos de vida.");
             } else {
                 playerHP -= 20;
                 showMessageBox("Fallaste el minijuego... el jefe te ha golpeado.");

@@ -18,8 +18,26 @@ namespace {
         {"¿2 + 2?", "4"},
         {"¿Color del cielo?", "azul"},
         {"¿Animal que maúlla?", "gato"},
-        {"¿Opuesto a día?", "noche"}
+        {"¿Opuesto a día?", "noche"},
+        {"¿Primer planeta del sistema solar?", "mercurio"},
+        {"¿Autor de Don Quijote?", "cervantes"},
+        {"¿Fruto rojo con semillas externas?", "fresa"},
+        {"¿Instrumento musical de 6 cuerdas?", "guitarra"},
+        {"¿Lenguaje de programación creado por Bjarne Stroustrup?", "c++"},
+        {"¿Continente más grande?", "asia"},
+        {"¿Elemento químico con símbolo O?", "oxigeno"},
+        {"¿Moneda de Japón?", "yen"},
+        {"¿Capital de Alemania?", "berlin"},
+        {"¿Año en que llegó el hombre a la Luna?", "1969"},
+        {"¿Autor de la teoría de la relatividad?", "einstein"},
+        {"¿Planeta rojo?", "marte"},
+        {"¿Órgano que bombea sangre?", "corazon"},
+        {"¿Compañía creadora del iPhone?", "apple"},
+        {"¿Líquido vital para los seres humanos?", "agua"}
     };
+
+    // Variable para llevar el progreso de las preguntas
+    int currentQuestionIndex = 0;
 
     bool checkAnswer(const string& answer, const string& correct) {
         string normalized = answer;
@@ -65,6 +83,7 @@ namespace {
         cout << text;
     }
 }
+
 bool playriddles(int posX, int posY) {
     // Clear area for our frames
     system("cls");
@@ -74,11 +93,14 @@ bool playriddles(int posX, int posY) {
     drawFrame(posX, posY, 60, 20, " ADIVINANZA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
-    // Select random question
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dist(0, PREGUNTAS.size() - 1);
-    auto pregunta = PREGUNTAS[dist(gen)];
+    // Verificar si ya se respondieron todas las preguntas
+    if (currentQuestionIndex >= PREGUNTAS.size()) {
+        currentQuestionIndex = 0; // Reiniciar para futuras batallas
+        return true;
+    }
+
+    // Obtener la pregunta actual (en orden)
+    auto pregunta = PREGUNTAS[currentQuestionIndex];
 
     // Draw question frame (red)
     int questionFrameX = posX + 5;
@@ -97,41 +119,25 @@ bool playriddles(int posX, int posY) {
     cout << "> ";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default for input
 
-    // Get answer with timer
-    auto start = high_resolution_clock::now();
+    // Get answer
     string respuesta;
     getline(cin, respuesta);
-    auto end = high_resolution_clock::now();
-    auto elapsed = duration_cast<seconds>(end - start);
 
     // Verify answer
     bool isCorrect = checkAnswer(respuesta, pregunta.second);
-    bool timeOut = elapsed.count() >= 15;  // 15 second limit
 
     // Draw result frame
     int resultFrameX = posX + 5;
     int resultFrameY = posY + 16;
     
-    if (timeOut) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14); // Yellow for timeout
-        drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
-        centerTextInFrame(resultFrameX, resultFrameY, 50, 3, "¡Tiempo agotado!");
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-        return false;
-    } else if (isCorrect) {
-        // Draw victory frame on the right side
-        int victoryX = posX + 65;  // Positioned to the right of the main frame
-        int victoryY = posY;
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green
-        drawFrame(victoryX, victoryY, 30, 3, " VICTORIA ");
-        centerTextInFrame(victoryX, victoryY, 30, 3, "EL jefe ha sido vencido.");
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-
-        // Show correct answer message in main frame
+    if (isCorrect) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green for correct
         drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, "¡Correcto!");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+        
+        // Avanzar a la siguiente pregunta solo si la respuesta fue correcta
+        currentQuestionIndex++;
         return true;
     } else {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Red for incorrect
@@ -142,6 +148,3 @@ bool playriddles(int posX, int posY) {
         return false;
     }
 }
-
-
-
