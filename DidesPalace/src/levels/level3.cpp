@@ -6,6 +6,7 @@
 #include "player.h"
 #include "bosses.h"
 #include "levels/level3.h"
+#include "./minigames/3_numberSort.h"
 using namespace std;
 
 bool Level3()
@@ -53,7 +54,7 @@ bool Level3()
             drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
-               
+                bossBattleRPG(playNumberSort);
                 return false; // Si sobrevive, termina el nivel
             }
         }
