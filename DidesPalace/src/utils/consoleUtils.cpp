@@ -43,3 +43,22 @@ void consoleCenter()
 
     MoveWindow(hwnd, posX, posY, windowWidht, windowHeight, TRUE);
 }
+
+//Cambia el color del texto en la consola
+void setColor(WORD color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+// Obtiene el ancho de la consola
+int getConsoleWidth(){
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    return  csbi.srWindow.Right - csbi.srWindow.Left + 1;
+}
+
+// Obtiene la altura de la consola
+int getConsoleHeight(){
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+}

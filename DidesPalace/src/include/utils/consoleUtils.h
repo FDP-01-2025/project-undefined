@@ -16,6 +16,12 @@ const WORD COLOR_STATS = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSI
 //Funciones implementadas en consoleUtils.cpp
 void consoleSettings();
 void consoleCenter();
+//Mueve el cursor a una posición específica en la consola
 void moveCursor(int x, int y);
+// Cambia el color del texto en la consola
+void setColor(WORD color);
+// Obtiene el ancho y alto de la consola
+int getConsoleWidth();
+int getConsoleHeight();
 
 #endif
