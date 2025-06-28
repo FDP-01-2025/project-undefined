@@ -4,8 +4,10 @@
 #include <conio.h>
 #include "maze.h"
 #include "player.h"
+#include "bosses.h"
 #include "levels/level4.h"
 #include <utils/consoleUtils.h>
+#include "./minigames/4_keySmash.h"
 using namespace std;
 
 bool Level4()
@@ -26,7 +28,11 @@ bool Level4()
     // Se carga el laberinto (Parametros que recibe: Instancia de Maze y la ruta del archivo)
     loadMazeFromFile(maze, "data/levels/level4_map.txt");
 
-    cout << "==== NIVEL 4 ====";
+    //Diseño del título
+    cout << "\n";
+    string title = "========= NIVEL 4 =========\n";
+    moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
+    cout << title;
 
     // Dibujar el laberinto inicial
     // Parametros que se le pasa: Instancia de maze y el color que van a tener las paredes del laberinto
@@ -59,8 +65,7 @@ bool Level4()
             // Si logra llegar al jefe (B) pasa al mini juego
             if (maze.grid[maze.playerY][maze.playerX] == 'B') // Si llega al jefe
             {
-                cout << "\n¡Nivel completado!\n";
-                system("pause");
+                bossBattleRPG(playKeySmash); // Llama al mini juego de Key Smash
                 return false;
             }
         }

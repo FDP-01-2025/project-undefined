@@ -1,5 +1,5 @@
 #include "maze.h"
-#include <stdio.h>
+#include <fstream>
 #include <string.h>
 #include <iostream>
 #include <windows.h>
@@ -11,40 +11,42 @@ using namespace std;
 int marginX = 0;
 int marginY = 0;
 
-// Función que carga el laberinto del archivo de texto
+// Función que carga el laberinto del archivo de texto usando fstream
 void loadMazeFromFile(Maze &maze, const char *filePath)
 {
     // Se abre el archivo de texto que contiene el laberinto
-    FILE *file = fopen(filePath, "r");
+    ifstream file(filePath);
 
-    // Se valida que el archivo se abrio correctamente
+    // Se valida que el archivo se abrió correctamente
     if (!file)
     {
         cout << "Error al abrir el archivo: \n"
              << filePath;
+        return;
     }
 
-    // Buffer temporal para leer cada linea del archivo.
-    char line[MAX_COLS + 1];
-    // Se inicializan las varibales
+    // Buffer temporal para leer cada línea del archivo.
+    string line;
+
+    // Se inicializan las variables
     maze.rows = 0;
     maze.cols = 0;
 
-    // Se lee cada linea del archivo y se guarda en la matriz grid
-    while (fgets(line, sizeof(line), file) && maze.rows < MAX_ROWS)
+    // Se lee cada línea del archivo y se guarda en la matriz grid
+    while (getline(file, line) && maze.rows < MAX_ROWS)
     {
-        // Elimina salto de linea si existe
-        line[strcspn(line, "\n")] = '\0';
-        // Copia la linea a la matriz
-        strcpy(maze.grid[maze.rows], line);
+        // Limita la longitud de la línea al máximo permitido
+        if (line.length() > MAX_COLS)
+            line = line.substr(0, MAX_COLS);
 
+        // Copia la línea a la matriz del laberinto
+        strcpy(maze.grid[maze.rows], line.c_str());
+
+        // Registra el ancho del laberinto solo una vez (todas las filas deben tener el mismo)
         if (maze.cols == 0)
-        {
-            // Todas las filas deber tener el mismo ancho
-            maze.cols = strlen(line);
-        }
+            maze.cols = line.length();
 
-        // Buscar el jugador (P) y jefe (B)
+        // Busca jugador (P) y jefe (B)
         // Se recorre cada caracter para encontrar la posicion de P y B
         for (int col = 0; col < maze.cols; ++col)
         {
@@ -59,10 +61,12 @@ void loadMazeFromFile(Maze &maze, const char *filePath)
                 maze.bossY = maze.rows;
             }
         }
-        maze.rows++;
+
+        ++maze.rows;
     }
+
     // Se cierra el archivo
-    fclose(file);
+    file.close();
 
     // Calcular márgenes para centrado
     marginX = (WINDOW_WIDHT - maze.cols - 25) / 2;
