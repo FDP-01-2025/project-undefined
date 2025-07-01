@@ -203,12 +203,12 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
         }
 
         if (playerHP <= 0) {
-            showMessageBox("DERROTA - Has sido derrotado...");
+            showMessageBoxMiniGame("DERROTA - Has sido derrotado...");
             exit(0);
         }
     }
 
     if (bossDefeated) {
-        showMessageBox("¡VICTORIA! - El jefe ha sido vencido.");
+        showMessageBoxMiniGame("¡VICTORIA! - El jefe ha sido vencido.");
     }
 }
