@@ -1,13 +1,13 @@
 #include <windows.h>
 #include <utils/consoleUtils.h>
 
-// // Función para mover el cursor
+// Function to move the cursor
 void moveCursor(int x, int y) {
     COORD coord = { (SHORT)x, (SHORT)y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-// Función para configurar la consola
+// Function to configure the console
 void consoleSettings()
 {
     HWND hConsole = GetConsoleWindow();
@@ -21,7 +21,7 @@ void consoleSettings()
     SetConsoleWindowInfo(hOut, TRUE, &ventana);
 }
 
-// Función para centrar la ventana
+// Function to center the window
 void consoleCenter()
 {
     HWND hwnd = GetConsoleWindow();
@@ -44,19 +44,19 @@ void consoleCenter()
     MoveWindow(hwnd, posX, posY, windowWidht, windowHeight, TRUE);
 }
 
-//Cambia el color del texto en la consola
+// Changes the text color in the console
 void setColor(WORD color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-// Obtiene el ancho de la consola
+// Gets the console width
 int getConsoleWidth(){
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     return  csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
-// Obtiene la altura de la consola
+// Gets the console height
 int getConsoleHeight(){
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);

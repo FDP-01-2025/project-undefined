@@ -1,26 +1,26 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-//Definición de tamaños máximos del laberinto
-#define MAX_ROWS 70 //Filas
-#define MAX_COLS 70 //Columnas
+// Definition of maximum maze sizes
+#define MAX_ROWS 70 // Rows
+#define MAX_COLS 70 // Columns
 
 #include <windows.h>
 
-//Estructura que guarda el contenido del laberinto
+// Structure that stores the maze content
 struct Maze
 {
-    // Matriz del laberinto
+    // Maze matrix
     char grid[MAX_ROWS][MAX_COLS];
-    // Tamaño real del laberinto cargado (Del archivo txt)
+    // Actual size of the loaded maze (from txt file)
     int rows, cols;
-    // Posicion del jugador (P)
+    // Player position (P)
     int playerX, playerY;
-    // Posicion del jefe (B)
+    // Boss position (B)
     int bossX, bossY;
 };
 
-// FUNCIONES (Se implementaran en el maze.cpp)
+// FUNCTIONS (Will be implemented in maze.cpp)
 void loadMazeFromFile(Maze &maze, const char *filePath);
 void drawMaze(const Maze &maze, WORD wallColor);
 bool isWall(const Maze &maze, int y, int x);

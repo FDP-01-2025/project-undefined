@@ -3,7 +3,7 @@
 
 #include "maze.h"
 
-//Declaracion de funciones (Utilizadas en player.cpp)
+//Function declared used iin player.cpp
 bool movePlayer(Maze &maze, char direction);
 
 #endif
