@@ -86,7 +86,7 @@ bool playSpotDifference(int posX, int posY) {
     int questionFrameY = posY + 3;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Rojo
     drawFrame(questionFrameX, questionFrameY, 80, 7, " ORACIONES ");
-    centerTextInFrame(questionFrameX, questionFrameY, 60, 5, "Encuentra la palabra o número diferente:");
+    centerTextInFrame(questionFrameX, questionFrameY, 60, 5, "Encuentra la palabra o número diferente(palabra de abajo):");
     moveCursor(questionFrameX + 2, questionFrameY + 3);
     cout << diferencia.first;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
