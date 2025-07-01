@@ -1,6 +1,5 @@
 #include "minigames/1_riddles.h"
 #include "bosses.h"
-#include <vector>
 #include <algorithm>
 #include <random>
 #include <chrono>
@@ -12,8 +11,8 @@ using namespace std;
 using namespace std::chrono;
 
 namespace {
-    // Question bank (reduced to 8 easiest questions)
-    const vector<pair<string, string>> PREGUNTAS = {
+    // Question bank (replaced vector with array)
+    const pair<string, string> PREGUNTAS[8] = {
         {"¿2 + 2?", "4"},
         {"¿Color del cielo?", "azul"},
         {"¿Animal que maúlla?", "gato"},
@@ -81,8 +80,8 @@ bool playriddles(int posX, int posY) {
     drawFrame(posX, posY, 60, 20, " ADIVINANZA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
-    // Check if all questions have been answered
-    if (currentQuestionIndex >= PREGUNTAS.size()) {
+    // Check if all questions have been answered (changed size() to array size calculation)
+    if (currentQuestionIndex >= sizeof(PREGUNTAS)/sizeof(PREGUNTAS[0])) {
         currentQuestionIndex = 0; // Reset for future battles
         return true;
     }
