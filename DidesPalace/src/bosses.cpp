@@ -1,18 +1,18 @@
-#include <iostream> // Entrada/salida estándar
-#include <fstream> // Para leer archivos (arte ASCII)
-#include <string> // Manejo de strings
-#include <windows.h> // Funciones de consola en Windows
-#include <conio.h> // Para capturar teclas
-#include "minigames/2_spotDifference.h" // Minijuego incluido
-#include "utils/consoleUtils.h" // Utilidades de consola personalizadas
+#include <iostream> // Standard input/output
+#include <fstream> // For file reading (ASCII art)
+#include <string> // String handling
+#include <windows.h> // Windows console functions
+#include <conio.h> // For key capture
+#include "minigames/2_spotDifference.h" // Included minigame
+#include "utils/consoleUtils.h" // Custom console utilities
 using namespace std;
 
-const int FRAME_WIDTH = 120; // Ancho del marco de batalla
-const int FRAME_HEIGHT = 35; // Alto del marco de batalla
+const int FRAME_WIDTH = 120; // Battle frame width
+const int FRAME_HEIGHT = 35; // Battle frame height
 
 // ================= Visual Functions ===================
 
-// Dibuja el marco principal del área de batalla
+// Draws the main battle area frame
 void drawBattleFrame() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
@@ -31,15 +31,17 @@ void drawBattleFrame() {
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
-// Dibuja el marco del los mensajes que se le muestran al usuario
+// Draws the message box frame shown to the user (right-aligned version)
 void showMessageBox(const string& message) {
-    int boxWidth = 60, boxHeight = 7;
-    int x = 15;
-    int y = 12;
+    int boxWidth = 40;  // Reduced width to not take too much space
+    int boxHeight = 7;
+    int x = 75;         // Right-aligned X position (adjusted for full screen)
+    int y = 12;         // Same Y position (vertically centered)
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
+    // Draw message box frame
     for (int i = 0; i < boxWidth; ++i) {
         moveCursor(x + i, y); cout << "-";
         moveCursor(x + i, y + boxHeight - 1); cout << "-";
@@ -53,7 +55,7 @@ void showMessageBox(const string& message) {
     moveCursor(x, y + boxHeight - 1); cout << "+";
     moveCursor(x + boxWidth - 1, y + boxHeight - 1); cout << "+";
 
-    // Mensaje dentro del cuadro
+    // Message inside box (in Spanish)
     moveCursor(x + 2, y + 2);
     cout << message;
 
@@ -63,14 +65,14 @@ void showMessageBox(const string& message) {
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     _getch();
 
-    // Limpiar cuadro
+    // Clear box
     for (int i = 0; i < boxHeight; ++i) {
         moveCursor(x, y + i);
         for (int j = 0; j < boxWidth; ++j) cout << " ";
     }
 }
 
-// Muestra arte ASCII del jefe desde archivo
+// Shows ASCII art of the boss from file
 void showBossArt(const string& path, int x, int y) {
     ifstream file(path);
     string line;
@@ -82,23 +84,24 @@ void showBossArt(const string& path, int x, int y) {
     }
 }
 
-// Función principal del sistema de batalla RPG con jefe
+// Main function for the RPG boss battle system
 void bossBattleRPG(bool (*minigame)(int, int)) {
-    int bossHP = 100;  // Cambiado de 1 a 100
+    int bossHP = 100;  // Changed from 1 to 100
     int playerHP = 100;
     bool bossDefeated = false;
 
-    consoleSettings(); // Configura consola
-    consoleCenter(); // Centra ventana
-    system("cls"); // Limpia pantalla
-    drawBattleFrame(); // Dibuja marco
+    consoleSettings(); // Configure console
+    consoleCenter(); // Center window
+    system("cls"); // Clear screen
+    drawBattleFrame(); // Draw frame
 
     while (bossHP > 0 && playerHP > 0) {
         system("cls");
         drawBattleFrame();
 
-        showBossArt("data/bosses/boss2.txt", 20, 3); // Arte del jefe
+        showBossArt("data/bosses/boss2.txt", 20, 3); // Boss art
 
+        // UI in Spanish
         moveCursor(90, 5);  cout << "╔══════════════╗";
         moveCursor(90, 6);  cout << "║  Jefe: ???   ║";
         moveCursor(90, 7);  cout << "║ HP: " << bossHP << "       ║";
@@ -109,13 +112,13 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
         moveCursor(90, 12); cout << "║ HP: " << playerHP << "     ║";
         moveCursor(90, 13); cout << "╚══════════════╝";
 
-        // Opciones de combate
+        // Combat options
         int optX = 35;
         int optY = 24;
         int optW = 80;
         int optH = 5;
 
-        // Dibujo del cuadro de opciones
+        // Draw options box
         moveCursor(optX, optY); cout << "╔" << string(optW - 2, '═') << "╗";
         for (int i = 1; i < optH - 1; ++i) {
             moveCursor(optX, optY + i);
@@ -123,7 +126,7 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
         }
         moveCursor(optX, optY + optH - 1); cout << "╚" << string(optW - 2, '═') << "╝";
 
-        // Opciones del menú
+        // Menu options in Spanish
         moveCursor(optX + 3, optY + 1);
         cout << "[1] Atacar (Mini juego)    [2] Defender    [3] Huir";
 
@@ -138,11 +141,11 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
                 cout << string(optW, ' ');
             }
 
-            // Ejecutar minijuego
+            // Execute minigame
             bool won = minigame(15, 15);
 
             if (won) {
-                bossHP -= 25;  // Reduce 25 puntos de vida en lugar de derrotar inmediatamente
+                bossHP -= 25;  // Reduce 25 HP instead of instant defeat
                 if (bossHP <= 0) {
                     bossHP = 0;
                     bossDefeated = true;

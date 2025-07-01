@@ -12,31 +12,19 @@ using namespace std;
 using namespace std::chrono;
 
 namespace {
-    // Question bank
+    // Question bank (reduced to 8 easiest questions)
     const vector<pair<string, string>> PREGUNTAS = {
-        {"¿Capital de Francia?", "paris"},
         {"¿2 + 2?", "4"},
         {"¿Color del cielo?", "azul"},
         {"¿Animal que maúlla?", "gato"},
         {"¿Opuesto a día?", "noche"},
-        {"¿Primer planeta del sistema solar?", "mercurio"},
-        {"¿Autor de Don Quijote?", "cervantes"},
+        {"¿Líquido vital para los seres humanos?", "agua"},
         {"¿Fruto rojo con semillas externas?", "fresa"},
         {"¿Instrumento musical de 6 cuerdas?", "guitarra"},
-        {"¿Lenguaje de programación creado por Bjarne Stroustrup?", "c++"},
-        {"¿Continente más grande?", "asia"},
-        {"¿Elemento químico con símbolo O?", "oxigeno"},
-        {"¿Moneda de Japón?", "yen"},
-        {"¿Capital de Alemania?", "berlin"},
-        {"¿Año en que llegó el hombre a la Luna?", "1969"},
-        {"¿Autor de la teoría de la relatividad?", "einstein"},
-        {"¿Planeta rojo?", "marte"},
-        {"¿Órgano que bombea sangre?", "corazon"},
-        {"¿Compañía creadora del iPhone?", "apple"},
-        {"¿Líquido vital para los seres humanos?", "agua"}
+        {"¿Órgano que bombea sangre?", "corazon"}
     };
 
-    // Variable para llevar el progreso de las preguntas
+    // Variable to track question progress
     int currentQuestionIndex = 0;
 
     bool checkAnswer(const string& answer, const string& correct) {
@@ -93,13 +81,13 @@ bool playriddles(int posX, int posY) {
     drawFrame(posX, posY, 60, 20, " ADIVINANZA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
-    // Verificar si ya se respondieron todas las preguntas
+    // Check if all questions have been answered
     if (currentQuestionIndex >= PREGUNTAS.size()) {
-        currentQuestionIndex = 0; // Reiniciar para futuras batallas
+        currentQuestionIndex = 0; // Reset for future battles
         return true;
     }
 
-    // Obtener la pregunta actual (en orden)
+    // Get current question (in order)
     auto pregunta = PREGUNTAS[currentQuestionIndex];
 
     // Draw question frame (red)
@@ -136,7 +124,7 @@ bool playriddles(int posX, int posY) {
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, "¡Correcto!");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         
-        // Avanzar a la siguiente pregunta solo si la respuesta fue correcta
+        // Move to next question only if answer was correct
         currentQuestionIndex++;
         return true;
     } else {
