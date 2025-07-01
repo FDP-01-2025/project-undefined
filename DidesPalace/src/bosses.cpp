@@ -33,9 +33,9 @@ void drawBattleFrame() {
 
 // Draws the message box frame shown to the user (right-aligned version)
 void showMessageBox(const string& message) {
-    int boxWidth = 40;  // Reduced width to not take too much space
+    int boxWidth = 45;  // Reduced width to not take too much space
     int boxHeight = 7;
-    int x = 75;         // Right-aligned X position (adjusted for full screen)
+    int x = 35;         // Right-aligned X position (adjusted for full screen)
     int y = 12;         // Same Y position (vertically centered)
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -66,6 +66,42 @@ void showMessageBox(const string& message) {
     _getch();
 
     // Clear box
+    for (int i = 0; i < boxHeight; ++i) {
+        moveCursor(x, y + i);
+        for (int j = 0; j < boxWidth; ++j) cout << " ";
+    }
+}
+
+void showMessageBoxMiniGame(const string& message) {
+    int boxWidth = 66;
+    int boxHeight = 7;
+    int x = 50;
+    int y = 6;     
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+    for (int i = 0; i < boxWidth; ++i) {
+        moveCursor(x + i, y); cout << "-";
+        moveCursor(x + i, y + boxHeight - 1); cout << "-";
+    }
+    for (int i = 0; i < boxHeight; ++i) {
+        moveCursor(x, y + i); cout << "|";
+        moveCursor(x + boxWidth - 1, y + i); cout << "|";
+    }
+    moveCursor(x, y); cout << "+";
+    moveCursor(x + boxWidth - 1, y); cout << "+";
+    moveCursor(x, y + boxHeight - 1); cout << "+";
+    moveCursor(x + boxWidth - 1, y + boxHeight - 1); cout << "+";
+
+    moveCursor(x + 2, y + 2);
+    cout << message;
+    moveCursor(x + 2, y + 4);
+    cout << "Presiona una tecla para continuar...";
+
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    _getch();
+
     for (int i = 0; i < boxHeight; ++i) {
         moveCursor(x, y + i);
         for (int j = 0; j < boxWidth; ++j) cout << " ";
@@ -104,12 +140,12 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
         // UI in Spanish
         moveCursor(90, 5);  cout << "╔══════════════╗";
         moveCursor(90, 6);  cout << "║  Jefe: ???   ║";
-        moveCursor(90, 7);  cout << "║ HP: " << bossHP << "       ║";
+        moveCursor(90, 7);  cout << "║ HP: " << bossHP << "      ║";
         moveCursor(90, 8);  cout << "╚══════════════╝";
 
         moveCursor(90, 10); cout << "╔══════════════╗";
         moveCursor(90, 11); cout << "║  Tú          ║";
-        moveCursor(90, 12); cout << "║ HP: " << playerHP << "     ║";
+        moveCursor(90, 12); cout << "║ HP: " << playerHP << "      ║";
         moveCursor(90, 13); cout << "╚══════════════╝";
 
         // Combat options
@@ -150,10 +186,10 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
                     bossHP = 0;
                     bossDefeated = true;
                 }
-                showMessageBox("¡Has acertado el minijuego! El jefe pierde 25 puntos de vida.");
+                showMessageBoxMiniGame("¡Has acertado el minijuego! El jefe pierde 25 puntos de vida.");
             } else {
                 playerHP -= 20;
-                showMessageBox("Fallaste el minijuego... el jefe te ha golpeado.");
+                showMessageBoxMiniGame("Fallaste el minijuego... el jefe te ha golpeado.");
             }
         } else if (opcion == '2') {
             playerHP += 5;
