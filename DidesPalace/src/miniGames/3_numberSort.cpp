@@ -20,7 +20,7 @@ namespace
         {"Ordena los siguientes numeros: 20, 10, 5, 15", "5, 10, 15, 20"},
         {"Ordena los siguientes numeros: 2, 8, 4, 6", "2, 4, 6, 8"}};
 
-    // Variable para llevar el progreso
+    // position of question counter
     int currentQuestionIndex = 0;
 
     bool checkAnswer(const string &answer, const string &correct)
@@ -92,7 +92,7 @@ bool playNumberSort(int posX, int posY)
         return true;
     }
 
-    // Obtener la pregunta actual (en orden)
+    // get each question (in  order)
     auto pregunta = LISTA[currentQuestionIndex];
 
     // Draw question frame (red)
@@ -130,7 +130,7 @@ bool playNumberSort(int posX, int posY)
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, "¡Correcto!");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
-        // Avanzar a la siguiente pregunta solo si la respuesta fue correcta
+        // go to next question only if answered correctly
         currentQuestionIndex++;
         return true;
     }
