@@ -1,3 +1,0 @@
-C:/Users/espin_clky9n2/Desktop/project-undefined/DidesPalace/CMakeFiles/DidesPalace.dir
-C:/Users/espin_clky9n2/Desktop/project-undefined/DidesPalace/CMakeFiles/edit_cache.dir
-C:/Users/espin_clky9n2/Desktop/project-undefined/DidesPalace/CMakeFiles/rebuild_cache.dir

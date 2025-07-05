@@ -12,65 +12,65 @@ using namespace std;
 
 bool Level4()
 {
-    // Hide cursor
+    // Ocultar cursor
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
 
-    // Clear screen completely when entering the level
+    // Limpiar pantalla completamente al entrar al nivel
     system("cls");
 
-    // Create a Maze instance
+    // Se crea una instancia de Maze
     Maze maze;
 
-    // Load the maze (Parameters: Maze instance and file path)
+    // Se carga el laberinto (Parametros que recibe: Instancia de Maze y la ruta del archivo)
     loadMazeFromFile(maze, "data/levels/level4_map.txt");
 
-    // Title design
+    //Diseño del título
     cout << "\n";
-    string title = "========= LEVEL 4 =========\n";
+    string title = "========= NIVEL 4 =========\n";
     moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
     cout << title;
 
-    // Draw initial maze
-    // Parameters: Maze instance and wall color
+    // Dibujar el laberinto inicial
+    // Parametros que se le pasa: Instancia de maze y el color que van a tener las paredes del laberinto
     drawMaze(maze, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
-    // This code block runs continuously unless 'q' or ESC is pressed
+    // Se ejecuta este bloque de codigo siempre, a menos que se presione q o esc.
     while (true)
     {
-        // Capture the key pressed by the user
+        // Captura la letra que presiono el usuario
         char key = _getch();
 
-        // If 'q' is pressed, return to main menu
+        // Si la letra presionada es q regresa al menu principal.
         if (key == 'q' || key == 'Q')
         {
             return false;
-            // If ESC is pressed, end the game
+            // Si presiona esc se termina el juego
         }
         else if (key == 27)
         {
-            // Return true to indicate game exit
+            // Devuelve true para indicar salida del juego
             return true;
         }
 
-        // Function that handles movement (Parameters: Maze instance and captured key)
+        // Funcion que permite el movimiento (Parametros que recibe: Instancia de maze y la letra capturada)
         if (movePlayer(maze, key))
         {
-            // Only redraw if movement was valid
+            // Solo redibujar si hubo movimiento válido
             drawMaze(maze, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
-            // If player reaches the boss (B), start minigame
-            if (maze.grid[maze.playerY][maze.playerX] == 'B') // If reaches boss
+            // Si logra llegar al jefe (B) pasa al mini juego
+            if (maze.grid[maze.playerY][maze.playerX] == 'B') // Si llega al jefe
             {
-                bossBattleRPG(playKeySmash); // Call Key Smash minigame
+                bossBattleRPG(playKeySmash); // Llama al mini juego de Key Smash
                 return false;
             }
         }
 
-        // Small pause for game loop
+        // Pequeña pausa
         Sleep(16);
     }
 }

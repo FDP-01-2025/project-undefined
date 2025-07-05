@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-//Function to show the menu//
+//Funcion para mostrar el menu
 void showMenu();
 
 #endif

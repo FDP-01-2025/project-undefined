@@ -1,27 +1,27 @@
 #include "minigames/4_keySmash.h"
 #include <iostream>
 #include <windows.h>
-#include "conio.h" // Library for keyboard input handling
-#include <ctime>   // For random number generation
+#include "conio.h" // Librería para manejo de entrada de teclado
+#include <ctime>   // Para generar números aleatorios
 #include <cstdlib>
 #include "../include/utils/consoleUtils.h"
 using namespace std;
 
-// Allows access to Windows console (cursor and color manipulation)
+// Permite acceder a la consola de windows (Manipular cursos y colores))
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-// Generates a random letter between 'A' and 'Z'
+// Genera una letra aleatoria entre 'A' y 'Z'
 char getRandomKey()
 {
     return 'A' + rand() % 26;
 }
 
-// Draws a frame around the game area
+// Dibuja un marco en el área del juego
 void drawFrame(int PosX, int PosY)
 {
     setColor(11);
 
-    // Draws horizontal borders
+    // Dibuja el marco de los bordes horizontales
     for (int i = 0; i <= WIDTH; i++)
     {
         moveCursor(PosX + i, PosY);
@@ -30,7 +30,7 @@ void drawFrame(int PosX, int PosY)
         cout << "#";
     }
 
-    // Draws vertical borders
+    // Dibuja el marco de los bordes verticales
     for (int i = 0; i <= HEIGHT + 1; i++)
     {
         moveCursor(PosX, PosY + i);
@@ -44,30 +44,30 @@ bool playKeySmash(int posX, int posY)
 {
     // Clear the console
     system("cls");
-    // Initialize random numbers
+    // Inicializa los numeros aleatorios
     srand(time(0));
 
-    // Calculate coordinates to center the console frame
+    // Se calculan las coordenadas para centrar el marco de la consola
     int consoleWidth = getConsoleWidth();
     int consoleHeight = getConsoleHeight();
     int startX = (consoleWidth - WIDTH) / 2;
     int startY = (consoleHeight - HEIGHT) / 2 - 1;
 
-    // Draws the frame one pixel before to enclose the game area
+    // Dibuja el marco un pixel antes para encerrar el area del juego
     drawFrame(startX - 1, startY - 1);
 
-    // GAME LOGIC
-    // Array of 5 letters that will fall simultaneously
+    // FUNCIONAMINETO DEL JUEGO
+    // Arreglo de 5 letras que caeran simultaneamente
     Key keys[NUM_KEYS];
 
-    // Initialize score
+    // Inicializa el puntaje
     int score = 0;
-    // Initialize starting speed
+    // Inicializa la velocidad inicial
     int speed = 300;
-    // Initialize timer
+    // Inicializa el temporizador
     DWORD lastSpeedUp = GetTickCount();
 
-    // Initialize letters at random positions within the game area
+    // Inicializa las letras en posiciones aleatorias dentro del area del juego
     for (int i = 0; i < NUM_KEYS; i++)
     {
         keys[i].letter = getRandomKey();
@@ -76,7 +76,7 @@ bool playKeySmash(int posX, int posY)
         keys[i].active = true;
     }
 
-    // Erase previous letter before drawing the new one
+    // Borra la letra anterior antes de dibujar la nueva
     while (true)
     {
         for (int i = 0; i < NUM_KEYS; i++)
@@ -87,7 +87,7 @@ bool playKeySmash(int posX, int posY)
             }
         }
 
-        // Draw new letters
+        // Dibuja letras nuevas
         for (int i = 0; i < NUM_KEYS; i++)
         {
             if (keys[i].active)
@@ -98,31 +98,31 @@ bool playKeySmash(int posX, int posY)
             }
         }
 
-        // Capture pressed key
+        // Captura la tecla presionada
         if (_kbhit())
         {
-            char keyPressed = toupper(_getch()); // Captures pressed key and converts to uppercase
+            char keyPressed = toupper(_getch()); // Captura la tecla presionada y la convierte a mayúscula
             for (int i = 0; i < NUM_KEYS; i++)
             {
                 if (keys[i].active && keyPressed == keys[i].letter)
                 {
                     moveCursor(keys[i].x, keys[i].y);
-                    cout << " "; // Erases the correct letter
+                    cout << " "; // Borra la letra correcta
                     score++;
-                    keys[i].letter = getRandomKey(); // Generates new letter
+                    keys[i].letter = getRandomKey(); // Genera una nueva letra
                     keys[i].x = startX + 1 + rand() % (WIDTH - 2);
-                    keys[i].y = startY; // Resets vertical position
+                    keys[i].y = startY; // Reinicia la posición vertical de la letra
                 }
             }
         }
 
-        // Move letter downward
+        // Mueve la letra hacia abajo
         for (int i = 0; i < NUM_KEYS; i++)
         {
             if (keys[i].active)
             {
                 keys[i].y++;
-                // If letter reaches bottom of game area, it's considered a failure
+                // Si la letra llega al final del área del juego, se considera un fallo
                 if (keys[i].y > startY + HEIGHT)
                 {
                     setColor(12);
@@ -131,17 +131,17 @@ bool playKeySmash(int posX, int posY)
                     moveCursor(startX, startY + HEIGHT + 4);
                     cout << "Presiona una tecla para continuar...";
                     _getch();
-                    return false; // Ends game
+                    return false; // Termina el juego
                 }
             }
         }
 
-        // Display current score
+        // Muestra el puntaje actual
         moveCursor(startX, startY + HEIGHT + 2);
         setColor(10);
         cout << "Puntaje: " << score << "    ";
 
-        // If score reaches 50, player wins
+        // Si el puntaje llega a 50, el jugador gana
         if (score >= 50) 
         {
             setColor(10);
@@ -150,16 +150,16 @@ bool playKeySmash(int posX, int posY)
             moveCursor(startX, startY + HEIGHT + 4);
             cout << "Presiona una tecla para continuar...";
             _getch();
-            return true; // Ends game
+            return true; // Termina el juego
         }
 
-        // Increase game speed every 15 seconds
+        // Actualiza la velocidad del juego cada 15 segundos
         if (GetTickCount() - lastSpeedUp >= 15000 && speed > 50)
         {
             speed -= 50;
             lastSpeedUp = GetTickCount();
         }
 
-        Sleep(speed); // Controls game speed
+        Sleep(speed); // Controla la velocidad del juego
     }
 }

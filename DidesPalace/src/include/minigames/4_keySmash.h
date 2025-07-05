@@ -1,22 +1,22 @@
 #pragma once
 
-const int WIDTH = 40; //Gameplay width
-const int HEIGHT = 20; // gameplay height
-const int NUM_KEYS = 5; //actives keys at the same time
+const int WIDTH = 40; //Ancho del area del juego
+const int HEIGHT = 20; //Alto del area del juego
+const int NUM_KEYS = 5; //Letras activas simultaneas
 
-//structure to represent each letter.
+//Estructura para representar una  letra
 struct Key{
-    // saves the letter
+    //Guarda la letra
     char letter;
-    //letter position in the frame
+    //Coordenadas de la letra en el area del juego
     int x, y;
-    //indicates if the letter is still active
+    //Indica si la letra esta activa
     bool active;
 };
 
-//functions implemented
+//Funciones a implementar
 bool playKeySmash(int posX = 0, int posY = 0);
-// key randomizer (between a-z)
+//Función que genera una letra aleatoria entre 'A' y 'Z'
 char getRandomKey(); 
-// function that draws the the frame
+//Función que dibuja un marco en el area del juego
 void drawFrame(int posX, int posY);
