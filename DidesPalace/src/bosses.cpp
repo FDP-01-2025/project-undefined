@@ -146,7 +146,7 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
         moveCursor(90, 8);  cout << "╚══════════════╝";
 
         moveCursor(90, 10); cout << "╔══════════════╗";
-        moveCursor(90, 11); cout << "║ ♥ Tú          ║";
+        moveCursor(90, 11); cout << "║ ♥ Tú         ║";
         moveCursor(90, 12); cout << "║ HP: " << playerHP << "      ║";
         moveCursor(90, 13); cout << "╚══════════════╝";
 

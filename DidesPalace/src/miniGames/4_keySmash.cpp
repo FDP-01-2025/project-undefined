@@ -65,7 +65,7 @@ bool playKeySmash(int posX, int posY)
         }
 
         // Funcion to show an animated message (Title of the game)
-        showAnimatedMessage("SMASH KEY - RONDA " + to_string(ronda) + "\nPresiona las teclas correctas antes de que lleguen al final");
+        showAnimatedMessage("SMASH KEY - RONDA " + to_string(ronda) + "\nPresiona las teclas correctas antes de que lleguen al final" + "\n\n➣ Letras: " + to_string(numKeys) + "\n➣ Velocidad: " + to_string(speed) + " ms");
 
         // Draws the frame one pixel before to enclose the game area
         drawFrame(startX - 1, startY - 1);
@@ -158,23 +158,27 @@ bool playKeySmash(int posX, int posY)
             cout << "✽ Puntaje: " << score << "    ";
 
             // If score reaches 50, player wins
-            if (score >= 50)
+            if (score > 49)
             {
+                // Wait for 2 seconds before continuing
+                Sleep(2000);
+
                 setColor(10);
                 moveCursor(startX, startY + HEIGHT + 3);
-                cout << "¡Felicidades ganaste la ronda!" << score << " puntos.";
+                cout << "¡Felicidades pasaste la ronda!";
                 moveCursor(startX, startY + HEIGHT + 4);
                 cout << "Presiona una tecla para continuar...";
+                _getch(); // Wait for player to press a key
                 ronda++; // Increase round number
-                _getch();
+
                 delete[] keys; // Free memory
                 return true;   // Ends game
             }
 
             // Increase game speed every 15 seconds
-            if (GetTickCount() - lastSpeedUp >= 15000 && speed > 50)
+            if (GetTickCount() - lastSpeedUp >= 5000 && speed > 50)
             {
-                speed -= 50;
+                speed -= 20;
                 lastSpeedUp = GetTickCount();
             }
 
