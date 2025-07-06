@@ -5,6 +5,7 @@
 #include <ctime>   // For random number generation
 #include <cstdlib>
 #include "../include/utils/consoleUtils.h"
+#include "../include/bosses.h" // For boss battle handling
 using namespace std;
 
 // Allows access to Windows console (cursor and color manipulation)
@@ -53,113 +54,131 @@ bool playKeySmash(int posX, int posY)
     int startX = (consoleWidth - WIDTH) / 2;
     int startY = (consoleHeight - HEIGHT) / 2 - 1;
 
-    // Draws the frame one pixel before to enclose the game area
-    drawFrame(startX - 1, startY - 1);
-
-    // GAME LOGIC
-    // Array of 5 letters that will fall simultaneously
-    Key keys[NUM_KEYS];
-
-    // Initialize score
-    int score = 0;
-    // Initialize starting speed
-    int speed = 300;
-    // Initialize timer
-    DWORD lastSpeedUp = GetTickCount();
-
-    // Initialize letters at random positions within the game area
-    for (int i = 0; i < NUM_KEYS; i++)
+    while (bossHP > 0)
     {
-        keys[i].letter = getRandomKey();
-        keys[i].x = startX + 1 + rand() % (WIDTH - 2);
-        keys[i].y = startY;
-        keys[i].active = true;
-    }
-
-    // Erase previous letter before drawing the new one
-    while (true)
-    {
-        for (int i = 0; i < NUM_KEYS; i++)
+        int numKeys = 5 + ronda - 1;
+        // Initialize starting speed
+        int speed = 300 - (ronda - 1) * 40; // Speed decreases as rounds increase
+        if (speed < 80)
         {
-            if (keys[i].active && keys[i].y > startY)
-            {
-                moveCursor(keys[i].x, keys[i].y - 1), cout << " ";
-            }
+            speed = 80; // Minimum speed limit
         }
 
-        // Draw new letters
-        for (int i = 0; i < NUM_KEYS; i++)
+        // Funcion to show an animated message (Title of the game)
+        showAnimatedMessage("SMASH KEY - RONDA " + to_string(ronda) + "\nPresiona las teclas correctas antes de que lleguen al final");
+
+        // Draws the frame one pixel before to enclose the game area
+        drawFrame(startX - 1, startY - 1);
+
+        moveCursor(startX, startY - 6);
+        setColor(6);
+        cout << "    <<<<< 𝑺𝒎𝒂𝒔𝒉 𝒌𝒆𝒚 - " << "𝑹𝒐𝒏𝒅𝒂: " << ronda << " >>>>>";
+        setColor(15);
+        moveCursor(startX, startY - 4);
+        cout << "• Cantidad de letras: " << numKeys;
+        moveCursor(startX, startY - 3);
+        cout << "• Velocidad: " << speed << " ms";
+
+        // GAME LOGIC
+        Key *keys = new Key[numKeys];
+
+        // Initialize score
+        int score = 0;
+
+        // Initialize timer
+        DWORD lastSpeedUp = GetTickCount();
+
+        // Initialize letters at random positions within the game area
+        for (int i = 0; i < numKeys; i++)
         {
-            if (keys[i].active)
-            {
-                moveCursor(keys[i].x, keys[i].y);
-                setColor(14);
-                cout << keys[i].letter;
-            }
+            keys[i].letter = getRandomKey();
+            keys[i].x = startX + 1 + rand() % (WIDTH - 2);
+            keys[i].y = startY;
+            keys[i].active = true;
         }
 
-        // Capture pressed key
-        if (_kbhit())
+        // Erase previous letter before drawing the new one
+        while (true)
         {
-            char keyPressed = toupper(_getch()); // Captures pressed key and converts to uppercase
-            for (int i = 0; i < NUM_KEYS; i++)
+            for (int i = 0; i < numKeys; i++)
             {
-                if (keys[i].active && keyPressed == keys[i].letter)
+                if (keys[i].active && keys[i].y > startY)
+                {
+                    moveCursor(keys[i].x, keys[i].y - 1), cout << " ";
+                }
+            }
+
+            // Draw new letters
+            for (int i = 0; i < numKeys; i++)
+            {
+                if (keys[i].active)
                 {
                     moveCursor(keys[i].x, keys[i].y);
-                    cout << " "; // Erases the correct letter
-                    score++;
-                    keys[i].letter = getRandomKey(); // Generates new letter
-                    keys[i].x = startX + 1 + rand() % (WIDTH - 2);
-                    keys[i].y = startY; // Resets vertical position
+                    setColor(14);
+                    cout << keys[i].letter;
                 }
             }
-        }
 
-        // Move letter downward
-        for (int i = 0; i < NUM_KEYS; i++)
-        {
-            if (keys[i].active)
+            // Capture pressed key
+            if (_kbhit())
             {
-                keys[i].y++;
-                // If letter reaches bottom of game area, it's considered a failure
-                if (keys[i].y > startY + HEIGHT)
+                char keyPressed = toupper(_getch()); // Captures pressed key and converts to uppercase
+                for (int i = 0; i < numKeys; i++)
                 {
-                    setColor(12);
-                    moveCursor(startX, startY + HEIGHT + 3);
-                    cout << "¡Fallaste! Puntos: " << score;
-                    moveCursor(startX, startY + HEIGHT + 4);
-                    cout << "Presiona una tecla para continuar...";
-                    _getch();
-                    return false; // Ends game
+                    if (keys[i].active && keyPressed == keys[i].letter)
+                    {
+                        moveCursor(keys[i].x, keys[i].y);
+                        cout << " "; // Erases the correct letter
+                        score++;
+                        keys[i].letter = getRandomKey(); // Generates new letter
+                        keys[i].x = startX + 1 + rand() % (WIDTH - 2);
+                        keys[i].y = startY; // Resets vertical position
+                    }
                 }
             }
-        }
 
-        // Display current score
-        moveCursor(startX, startY + HEIGHT + 2);
-        setColor(10);
-        cout << "Puntaje: " << score << "    ";
+            // Move letter downward
+            for (int i = 0; i < numKeys; i++)
+            {
+                if (keys[i].active)
+                {
+                    keys[i].y++;
+                    // If letter reaches bottom of game area, it's considered a failure
+                    if (keys[i].y > startY + HEIGHT)
+                    {
+                        delete[] keys; // Free memory
+                        return false;  // Ends game
+                    }
+                }
+            }
 
-        // If score reaches 50, player wins
-        if (score >= 50) 
-        {
+            // Display current score
+            moveCursor(startX, startY + HEIGHT + 2);
             setColor(10);
-            moveCursor(startX, startY + HEIGHT + 3);
-            cout << "¡Felicidades! Has ganado con " << score << " puntos.";
-            moveCursor(startX, startY + HEIGHT + 4);
-            cout << "Presiona una tecla para continuar...";
-            _getch();
-            return true; // Ends game
-        }
+            cout << "✽ Puntaje: " << score << "    ";
 
-        // Increase game speed every 15 seconds
-        if (GetTickCount() - lastSpeedUp >= 15000 && speed > 50)
-        {
-            speed -= 50;
-            lastSpeedUp = GetTickCount();
-        }
+            // If score reaches 50, player wins
+            if (score >= 50)
+            {
+                setColor(10);
+                moveCursor(startX, startY + HEIGHT + 3);
+                cout << "¡Felicidades ganaste la ronda!" << score << " puntos.";
+                moveCursor(startX, startY + HEIGHT + 4);
+                cout << "Presiona una tecla para continuar...";
+                ronda++; // Increase round number
+                _getch();
+                delete[] keys; // Free memory
+                return true;   // Ends game
+            }
 
-        Sleep(speed); // Controls game speed
+            // Increase game speed every 15 seconds
+            if (GetTickCount() - lastSpeedUp >= 15000 && speed > 50)
+            {
+                speed -= 50;
+                lastSpeedUp = GetTickCount();
+            }
+
+            Sleep(speed); // Controls game speed
+        }
     }
 }
