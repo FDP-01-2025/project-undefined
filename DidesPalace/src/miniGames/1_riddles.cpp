@@ -10,6 +10,9 @@
 using namespace std;
 using namespace std::chrono;
 
+const int WIDTH = 60; // Width of the game area
+const int HEIGHT = 20; // Height of the game area
+
 namespace {
     // Question bank (replaced vector with array)
     const pair<string, string> PREGUNTAS[8] = {
@@ -75,9 +78,15 @@ bool playriddles(int posX, int posY) {
     // Clear area for our frames
     system("cls");
 
+    // Calculate coordinates to center the game frame
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
+    int startX = (consoleWidth - WIDTH) / 2;
+    int startY = (consoleHeight - HEIGHT) / 2 - 1;
+
     // Draw main container frame (green)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green text
-    drawFrame(posX, posY, 60, 20, " ADIVINANZA ");
+    drawFrame(startX, startY, WIDTH, HEIGHT, " ADIVINANZA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
     // Check if all questions have been answered (changed size() to array size calculation)
@@ -90,16 +99,16 @@ bool playriddles(int posX, int posY) {
     auto pregunta = PREGUNTAS[currentQuestionIndex];
 
     // Draw question frame (red)
-    int questionFrameX = posX + 5;
-    int questionFrameY = posY + 3;
+    int questionFrameX = startX + 5;
+    int questionFrameY = startY+ 3;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Red text
     drawFrame(questionFrameX, questionFrameY, 50, 5, " PREGUNTA ");
     centerTextInFrame(questionFrameX, questionFrameY, 50, 5, pregunta.first);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
     // Draw answer input frame (blue)
-    int answerFrameX = posX + 5;
-    int answerFrameY = posY + 10;
+    int answerFrameX = startX + 5;
+    int answerFrameY = startY + 10;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9); // Blue text
     drawFrame(answerFrameX, answerFrameY, 50, 5, " RESPUESTA ");
     moveCursor(answerFrameX + 10, answerFrameY + 2);
@@ -114,8 +123,8 @@ bool playriddles(int posX, int posY) {
     bool isCorrect = checkAnswer(respuesta, pregunta.second);
 
     // Draw result frame
-    int resultFrameX = posX + 5;
-    int resultFrameY = posY + 16;
+    int resultFrameX = startX + 5;
+    int resultFrameY = startY + 16;
     
     if (isCorrect) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green for correct

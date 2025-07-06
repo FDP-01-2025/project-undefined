@@ -1,62 +1,84 @@
-#include <iostream> // Standard input/output
-#include <fstream> // For file reading (ASCII art)
-#include <string> // String handling
-#include <windows.h> // Windows console functions
-#include <conio.h> // For key capture
+#include <iostream>                     // Standard input/output
+#include <fstream>                      // For file reading (ASCII art)
+#include <string>                       // String handling
+#include <windows.h>                    // Windows console functions
+#include <conio.h>                      // For key capture
 #include "minigames/2_spotDifference.h" // Included minigame
-#include "utils/consoleUtils.h" // Custom console utilities
-#include "../include/bosses.h" // For boss battle handling
+#include "utils/consoleUtils.h"         // Custom console utilities
+#include "../include/bosses.h"          // For boss battle handling
 using namespace std;
 
 const int FRAME_WIDTH = 120; // Battle frame width
 const int FRAME_HEIGHT = 35; // Battle frame height
-int bossHP = 100;  // Changed from 1 to 100
-int ronda = 1; // Round counter
+int bossHP = 100;            // Changed from 1 to 100
+int ronda = 1;               // Round counter
 
 // ================= Visual Functions ===================
 
 // Draws the main battle area frame
-void drawBattleFrame() {
+void drawBattleFrame()
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    for (int i = 0; i < FRAME_WIDTH; ++i) {
-        moveCursor(5 + i, 1); cout << "-";
-        moveCursor(5 + i, FRAME_HEIGHT); cout << "-";
+    for (int i = 0; i < FRAME_WIDTH; ++i)
+    {
+        moveCursor(5 + i, 1);
+        cout << "-";
+        moveCursor(5 + i, FRAME_HEIGHT);
+        cout << "-";
     }
-    for (int i = 1; i <= FRAME_HEIGHT; ++i) {
-        moveCursor(5, i); cout << "|";
-        moveCursor(5 + FRAME_WIDTH - 1, i); cout << "|";
+    for (int i = 1; i <= FRAME_HEIGHT; ++i)
+    {
+        moveCursor(5, i);
+        cout << "|";
+        moveCursor(5 + FRAME_WIDTH - 1, i);
+        cout << "|";
     }
-    moveCursor(5, 1); cout << "+";
-    moveCursor(5 + FRAME_WIDTH - 1, 1); cout << "+";
-    moveCursor(5, FRAME_HEIGHT); cout << "+";
-    moveCursor(5 + FRAME_WIDTH - 1, FRAME_HEIGHT); cout << "+";
+    moveCursor(5, 1);
+    cout << "+";
+    moveCursor(5 + FRAME_WIDTH - 1, 1);
+    cout << "+";
+    moveCursor(5, FRAME_HEIGHT);
+    cout << "+";
+    moveCursor(5 + FRAME_WIDTH - 1, FRAME_HEIGHT);
+    cout << "+";
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 // Draws the message box frame shown to the user (right-aligned version)
-void showMessageBox(const string& message) {
-    int boxWidth = 45;  // Reduced width to not take too much space
+void showMessageBox(const string &message)
+{
+    int boxWidth = 45; // Reduced width to not take too much space
     int boxHeight = 7;
-    int x = 35;         // Right-aligned X position (adjusted for full screen)
-    int y = 12;         // Same Y position (vertically centered)
+    int x = 35; // Right-aligned X position (adjusted for full screen)
+    int y = 12; // Same Y position (vertically centered)
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
     // Draw message box frame
-    for (int i = 0; i < boxWidth; ++i) {
-        moveCursor(x + i, y); cout << "-";
-        moveCursor(x + i, y + boxHeight - 1); cout << "-";
+    for (int i = 0; i < boxWidth; ++i)
+    {
+        moveCursor(x + i, y);
+        cout << "-";
+        moveCursor(x + i, y + boxHeight - 1);
+        cout << "-";
     }
-    for (int i = 0; i < boxHeight; ++i) {
-        moveCursor(x, y + i); cout << "|";
-        moveCursor(x + boxWidth - 1, y + i); cout << "|";
+    for (int i = 0; i < boxHeight; ++i)
+    {
+        moveCursor(x, y + i);
+        cout << "|";
+        moveCursor(x + boxWidth - 1, y + i);
+        cout << "|";
     }
-    moveCursor(x, y); cout << "+";
-    moveCursor(x + boxWidth - 1, y); cout << "+";
-    moveCursor(x, y + boxHeight - 1); cout << "+";
-    moveCursor(x + boxWidth - 1, y + boxHeight - 1); cout << "+";
+    moveCursor(x, y);
+    cout << "+";
+    moveCursor(x + boxWidth - 1, y);
+    cout << "+";
+    moveCursor(x, y + boxHeight - 1);
+    cout << "+";
+    moveCursor(x + boxWidth - 1, y + boxHeight - 1);
+    cout << "+";
 
     // Message inside box (in Spanish)
     moveCursor(x + 2, y + 2);
@@ -69,54 +91,98 @@ void showMessageBox(const string& message) {
     _getch();
 
     // Clear box
-    for (int i = 0; i < boxHeight; ++i) {
+    for (int i = 0; i < boxHeight; ++i)
+    {
         moveCursor(x, y + i);
-        for (int j = 0; j < boxWidth; ++j) cout << " ";
+        for (int j = 0; j < boxWidth; ++j)
+            cout << " ";
     }
 }
 
-void showMessageBoxMiniGame(const string& message) {
-    int boxWidth = 66;
+void showMessageBoxMiniGame(const string &message, int color)
+{
+    int boxWidth = 70;
     int boxHeight = 7;
-    int x = 50;
-    int y = 6;     
+
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
+
+    int x = (consoleWidth - boxWidth) / 2;
+    int y = (consoleHeight - boxHeight) / 2;
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
-    for (int i = 0; i < boxWidth; ++i) {
-        moveCursor(x + i, y); cout << "-";
-        moveCursor(x + i, y + boxHeight - 1); cout << "-";
+    // Set background color based on the color parameter
+    // 1 = green, 2 = red, 3 = default (white background)
+    int background;
+    if (color == 1)
+    {
+        background = BACKGROUND_GREEN;
     }
-    for (int i = 0; i < boxHeight; ++i) {
-        moveCursor(x, y + i); cout << "|";
-        moveCursor(x + boxWidth - 1, y + i); cout << "|";
+    else if (color == 2)
+    {
+        background = BACKGROUND_RED;
     }
-    moveCursor(x, y); cout << "+";
-    moveCursor(x + boxWidth - 1, y); cout << "+";
-    moveCursor(x, y + boxHeight - 1); cout << "+";
-    moveCursor(x + boxWidth - 1, y + boxHeight - 1); cout << "+";
+    else
+    {
+        background = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
+    }
 
+    WORD textColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+
+    SetConsoleTextAttribute(hConsole, background | textColor);
+
+    // Fills the whole box with a background color
+    for (int i = 0; i < boxHeight; ++i)
+    {
+        moveCursor(x, y + i);
+        for (int j = 0; j < boxWidth; ++j)
+            cout << " ";
+    }
+
+    for (int i = 0; i < boxWidth; ++i)
+    {
+        moveCursor(x + i, y);
+        cout << "═";
+        moveCursor(x + i, y + boxHeight - 1);
+        cout << "═";
+    }
+    for (int i = 0; i < boxHeight; ++i)
+    {
+        moveCursor(x, y + i);
+        cout << "║";
+        moveCursor(x + boxWidth - 1, y + i);
+        cout << "║";
+    }
+
+    // Message centered inside the box
     moveCursor(x + 2, y + 2);
     cout << message;
     moveCursor(x + 2, y + 4);
     cout << "Presiona una tecla para continuar...";
 
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     _getch();
 
-    for (int i = 0; i < boxHeight; ++i) {
+    // Restore normal colors (gray on black background)
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+
+    // Clears the box after pressing the key
+    for (int i = 0; i < boxHeight; ++i)
+    {
         moveCursor(x, y + i);
-        for (int j = 0; j < boxWidth; ++j) cout << " ";
+        for (int j = 0; j < boxWidth; ++j)
+            cout << " ";
     }
 }
 
 // Shows ASCII art of the boss from file
-void showBossArt(const string& path, int x, int y) {
+void showBossArt(const string &path, int x, int y)
+{
     ifstream file(path);
     string line;
     int offsetY = 0;
-    while (getline(file, line)) {
+    while (getline(file, line))
+    {
         moveCursor(x, y + offsetY);
         cout << line;
         offsetY++;
@@ -124,26 +190,28 @@ void showBossArt(const string& path, int x, int y) {
 }
 
 // Main function for the RPG boss battle system
-void bossBattleRPG(bool (*minigame)(int, int)) {
+void bossBattleRPG(bool (*minigame)(int, int))
+{
     int playerHP = 100;
     bool bossDefeated = false;
 
     consoleSettings(); // Configure console
-    consoleCenter(); // Center window
-    system("cls"); // Clear screen
+    consoleCenter();   // Center window
+    system("cls");     // Clear screen
     drawBattleFrame(); // Draw frame
 
-    while (bossHP > 0 && playerHP > 0) {
+    while (bossHP > 0 && playerHP > 0)
+    {
         system("cls");
         drawBattleFrame();
 
         showBossArt("data/bosses/boss2.txt", 20, 3); // Boss art
 
         // UI in Spanish
-        moveCursor(90, 5);  cout << "╔══════════════╗";
-        moveCursor(90, 6);  cout << "║ -> Jefe:     ║";
-        moveCursor(90, 7);  cout << "║ HP: " << bossHP << "      ║";
-        moveCursor(90, 8);  cout << "╚══════════════╝";
+        moveCursor(90, 5); cout << "╔══════════════╗";
+        moveCursor(90, 6); cout << "║ -> Jefe:     ║";
+        moveCursor(90, 7); cout << "║  HP: " << bossHP << "     ║";
+        moveCursor(90, 8); cout << "╚══════════════╝";
 
         moveCursor(90, 10); cout << "╔══════════════╗";
         moveCursor(90, 11); cout << "║ ♥ Tú         ║";
@@ -157,12 +225,15 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
         int optH = 5;
 
         // Draw options box
-        moveCursor(optX, optY); cout << "╔" << string(optW - 2, '═') << "╗";
-        for (int i = 1; i < optH - 1; ++i) {
+        moveCursor(optX, optY);
+        cout << "╔" << string(optW - 2, '═') << "╗";
+        for (int i = 1; i < optH - 1; ++i)
+        {
             moveCursor(optX, optY + i);
             cout << "║" << string(optW - 2, ' ') << "║";
         }
-        moveCursor(optX, optY + optH - 1); cout << "╚" << string(optW - 2, '═') << "╝";
+        moveCursor(optX, optY + optH - 1);
+        cout << "╚" << string(optW - 2, '═') << "╝";
 
         // Menu options in Spanish
         moveCursor(optX + 3, optY + 1);
@@ -173,8 +244,10 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
 
         char opcion = _getch();
 
-        if (opcion == '1') {
-            for (int i = 0; i < optH; ++i) {
+        if (opcion == '1')
+        {
+            for (int i = 0; i < optH; ++i)
+            {
                 moveCursor(optX, optY + i);
                 cout << string(optW, ' ');
             }
@@ -182,35 +255,48 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
             // Execute minigame
             bool won = minigame(15, 15);
 
-            if (won) {
-                bossHP -= 25;  // Reduce 25 HP instead of instant defeat
-                if (bossHP <= 0) {
+            if (won)
+            {
+                bossHP -= 25; // Reduce 25 HP instead of instant defeat
+                if (bossHP <= 0)
+                {
                     bossHP = 0;
                     bossDefeated = true;
                 }
-                showMessageBoxMiniGame("¡Has acertado el minijuego! El jefe pierde 25 puntos de vida.");
-            } else {
-                playerHP -= 20;
-                showMessageBoxMiniGame("Fallaste el minijuego... el jefe te ha golpeado.");
+                showMessageBoxMiniGame("😄 ¡Has acertado el minijuego! El jefe pierde 25 puntos de vida 😄", 1);
             }
-        } else if (opcion == '2') {
+            else
+            {
+                playerHP -= 20;
+                showMessageBoxMiniGame("😭 Fallaste el minijuego... el jefe te ha golpeado 😭", 2);
+            }
+        }
+        else if (opcion == '2')
+        {
             playerHP += 5;
-            if (playerHP > 100) playerHP = 100;
+            if (playerHP > 100)
+                playerHP = 100;
             showMessageBox("Te has defendido y recuperado 5 de vida.");
-        } else if (opcion == '3') {
+        }
+        else if (opcion == '3')
+        {
             showMessageBox("¡Has huido de la batalla!");
             return;
-        } else {
+        }
+        else
+        {
             showMessageBox("Opción no válida.");
         }
 
-        if (playerHP <= 0) {
-            showMessageBoxMiniGame("DERROTA - Has sido derrotado...");
+        if (playerHP <= 0)
+        {
+            showMessageBoxMiniGame("GAME OVER - Has sido derrotado...", 2);
             exit(0);
         }
     }
 
-    if (bossDefeated) {
-        showMessageBoxMiniGame("¡VICTORIA! - El jefe ha sido vencido.");
+    if (bossDefeated)
+    {
+        showMessageBoxMiniGame("¡VICTORIA! - El jefe ha sido vencido.", 1);
     }
 }
