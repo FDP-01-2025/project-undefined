@@ -1,9 +1,9 @@
 #ifndef LEVEL3_H
 #define LEVEL3_H
 
-// FUNCIONES (Se implementaran en el level3.cpp)
+// FUNCTIONS (Will be implemented in level3.cpp)
 
-// Funciona que retorna un booleano para indicar si se debe salir del juego
+// Function that returns a boolean to indicate if the game should exit
 bool Level3();
 
 #endif

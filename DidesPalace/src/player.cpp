@@ -1,14 +1,14 @@
 #include "player.h"
 #include "maze.h"
 
-// Función que mueve al jugador dentro del laberinto
-// Devuelve true si el movimiento fue válido y se realizó
+// Function that moves the player within the maze
+// Returns true if the movement was valid and executed
 bool movePlayer(Maze &maze, char direction) {
-    // Se declaran variables para calcular la nueva posicion del jugador.
+    // Variables to calculate the player's new position
     int newX = maze.playerX;
     int newY = maze.playerY;
 
-    // Se evalua la tecla presionada
+    // Evaluate pressed key
     switch (direction) {
     // Up
     case 'w': case 'W':
@@ -27,21 +27,21 @@ bool movePlayer(Maze &maze, char direction) {
         newX++;
         break;
     default:
-        return false; // Tecla no válida
+        return false; // Invalid key
     }
 
-    // Se verifica que la posición está dentro del rango del laberinto
-    // y que no es una pared (#)
+    // Verify the position is within maze boundaries
+    // and not a wall (#)
     if (!isWall(maze, newY, newX)) 
     {
-        // Limpia la posición actual
+        // Clears current position
         maze.grid[maze.playerY][maze.playerX] = '.';
 
-        // Actualiza coordenadas del jugador
+        // Updates player coordinates
         maze.playerX = newX;
         maze.playerY = newY;
         
-        return true; // Movimiento válido
+        return true; // Valid movement
     }
-    return false; // Movimiento no válido
+    return false; // Invalid movement
 }

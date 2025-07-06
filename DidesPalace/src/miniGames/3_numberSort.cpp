@@ -20,7 +20,7 @@ namespace
         {"Ordena los siguientes numeros: 20, 10, 5, 15", "5, 10, 15, 20"},
         {"Ordena los siguientes numeros: 2, 8, 4, 6", "2, 4, 6, 8"}};
 
-    // Variable para llevar el progreso
+    // variable to move the index
     int currentQuestionIndex = 0;
 
     bool checkAnswer(const string &answer, const string &correct)
@@ -92,7 +92,7 @@ bool playNumberSort(int posX, int posY)
         return true;
     }
 
-    // Obtener la pregunta actual (en orden)
+    // get the question (in order)
     auto pregunta = LISTA[currentQuestionIndex];
 
     // Draw question frame (red)

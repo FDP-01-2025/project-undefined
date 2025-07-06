@@ -11,55 +11,54 @@ using namespace std;
 
 bool Level2()
 {
-    
-    // Ocultar cursor
+    // Hide cursor
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(hConsole, &cursorInfo);
     cursorInfo.bVisible = false;
     SetConsoleCursorInfo(hConsole, &cursorInfo);
     
-    // Limpiar pantalla completamente al entrar al nivel
+    // Clear screen completely when entering the level
     system("cls");
     
-    // Se crea una instancia de Maze
+    // Create a Maze instance
     Maze maze;
 
-    // Se carga el laberinto (Parametros que recibe: Instancia de Maze y la ruta del archivo)
+    // Load the maze (Parameters: Maze instance and file path)
     loadMazeFromFile(maze, "data/levels/level2_map.txt");
 
-    cout << "==== NIVEL 2 =====";
-    // Dibujar el laberinto inicial
-    //Parametros que se le pasa: Instancia de maze y el color que van a tener las paredes del laberinto
+    cout << "==== LEVEL 2 =====";
+    // Draw initial maze
+    // Parameters: Maze instance and wall color
     drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
-    // Se ejecuta este bloque de codigo siempre, a menos que se presione q o esc.
+    // This code block runs continuously unless 'q' or ESC is pressed
     while (true)
     {
-        // Captura la letra que presiono el usuario
+        // Capture the key pressed by the user
         char key = _getch();
         
-        // Si la letra presionada es q regresa al menu principal.
+        // If 'q' is pressed, return to main menu
         if (key == 'q' || key == 'Q'){
             return false;
-        //Si presiona esc se termina el juego    
+        // If ESC is pressed, end the game
         } else if (key == 27){
-            //Devuelve true para indicar salida del juego
+            // Return true to indicate game exit
             return true;
         }
             
-        // Funcion que permite el movimiento (Parametros que recibe: Instancia de maze y la letra capturada)
+        // Function that handles movement (Parameters: Maze instance and captured key)
         if (movePlayer(maze, key)) {
-            // Solo redibujar si hubo movimiento válido
+            // Only redraw if movement was valid
             drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
                 bossBattleRPG(playSpotDifference);
-                return false; // Si sobrevive, termina el nivel
+                return false; // If player survives, level ends
             }
         }
         
-        // Pequeña pausa 
+        // Small pause 
         Sleep(16);  
     }
 }

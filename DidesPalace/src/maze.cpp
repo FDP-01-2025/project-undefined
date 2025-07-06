@@ -7,17 +7,17 @@
 #include <utils/menu.h>
 using namespace std;
 
-// Variables para centrado
+// Variables for centering
 int marginX = 0;
 int marginY = 0;
 
-// Función que carga el laberinto del archivo de texto usando fstream
+// Function that loads the maze from a text file using fstream
 void loadMazeFromFile(Maze &maze, const char *filePath)
 {
-    // Se abre el archivo de texto que contiene el laberinto
+    // Open the text file containing the maze
     ifstream file(filePath);
 
-    // Se valida que el archivo se abrió correctamente
+    // Validate the file opened correctly
     if (!file)
     {
         cout << "Error al abrir el archivo: \n"
@@ -25,29 +25,29 @@ void loadMazeFromFile(Maze &maze, const char *filePath)
         return;
     }
 
-    // Buffer temporal para leer cada línea del archivo.
+    // Temporary buffer to read each file line
     string line;
 
-    // Se inicializan las variables
+    // Initialize variables
     maze.rows = 0;
     maze.cols = 0;
 
-    // Se lee cada línea del archivo y se guarda en la matriz grid
+    // Read each file line and store in grid matrix
     while (getline(file, line) && maze.rows < MAX_ROWS)
     {
-        // Limita la longitud de la línea al máximo permitido
+        // Limit line length to maximum allowed
         if (line.length() > MAX_COLS)
             line = line.substr(0, MAX_COLS);
 
-        // Copia la línea a la matriz del laberinto
+        // Copy line to maze matrix
         strcpy(maze.grid[maze.rows], line.c_str());
 
-        // Registra el ancho del laberinto solo una vez (todas las filas deben tener el mismo)
+        // Record maze width just once (all rows should have same width)
         if (maze.cols == 0)
             maze.cols = line.length();
 
-        // Busca jugador (P) y jefe (B)
-        // Se recorre cada caracter para encontrar la posicion de P y B
+        // Find player (P) and boss (B)
+        // Scan each character to locate P and B positions
         for (int col = 0; col < maze.cols; ++col)
         {
             if (line[col] == 'P')
@@ -65,34 +65,34 @@ void loadMazeFromFile(Maze &maze, const char *filePath)
         ++maze.rows;
     }
 
-    // Se cierra el archivo
+    // Close the file
     file.close();
 
-    // Calcular márgenes para centrado
+    // Calculate margins for centering
     marginX = (WINDOW_WIDHT - maze.cols - 25) / 2;
     marginY = (WINDOW_HEIGHT - maze.rows) / 2;
 }
 
-// Funcion que verifica si la celda (x,y) es una pared #.
+// Function that checks if cell (x,y) is a wall #
 bool isWall(const Maze &maze, int y, int x)
 {
     return x >= 0 && x < maze.cols && y >= 0 && y < maze.rows && maze.grid[y][x] == '#';
 }
 
-// Funcion para determinar el tipo de pared (visual)
+// Function to determine wall type (visual)
 char typeWall(const Maze &maze, int y, int x)
 {
-    // Si no es pared devuelve un espacio.
+    // If not a wall returns space
     if (!isWall(maze, y, x))
         return ' ';
 
-    // Se verifica si las celdas(Arriba, abajo, derecha, izquierda) tambien son paredes
+    // Check if adjacent cells (up, down, left, right) are also walls
     bool up = isWall(maze, y - 1, x);
     bool down = isWall(maze, y + 1, x);
     bool left = isWall(maze, y, x - 1);
     bool right = isWall(maze, y, x + 1);
 
-    // Se decide el simbolo a dibujar
+    // Determine which symbol to draw
     if (up || down)
         return '|';
     if (left || right)
@@ -100,14 +100,14 @@ char typeWall(const Maze &maze, int y, int x)
     return '#';
 }
 
-// Función para dibujar el laberinto
+// Function to draw the maze
 void drawMaze(const Maze &maze, WORD wallColor)
 {
-    // Permite el cambio de colores en la consola
+    // Enable color changes in console
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coord;
 
-    // Dibuja el laberinto
+    // Draw the maze
     for (int y = 0; y < maze.rows; ++y)
     {
         coord.X = marginX;
@@ -116,11 +116,11 @@ void drawMaze(const Maze &maze, WORD wallColor)
 
         for (int x = 0; x < maze.cols; ++x)
         {
-            // Obtiene el caracter actual del laberinto (x,y)
+            // Get current maze cell character (x,y)
             char c = maze.grid[y][x];
 
-            // LOGICA DE VISUALIZACION
-            // Verifica si es la celda donde esta el jugador
+            // VISUALIZATION LOGIC
+            // Check if it's the player's cell
             if (x == maze.playerX && y == maze.playerY)
             {
                 SetConsoleTextAttribute(hConsole, COLOR_PLAYER);
@@ -129,7 +129,7 @@ void drawMaze(const Maze &maze, WORD wallColor)
             else if (c == '#')
             {
                 SetConsoleTextAttribute(hConsole, wallColor);
-                // Dibuja '|' o '-', esto depende de la forma (Funcion isWallet)
+                // Draw '|' or '-' depending on shape (isWall function)
                 cout << typeWall(maze, y, x);
             }
             else if (c == 'B')
@@ -144,12 +144,12 @@ void drawMaze(const Maze &maze, WORD wallColor)
             }
         }
 
-        // Dibuja las instrucciones que salen a la par del laberinto
+        // Draw instructions next to the maze
         coord.X = marginX + maze.cols + 2;
         SetConsoleCursorPosition(hConsole, coord);
         SetConsoleTextAttribute(hConsole, COLOR_STATS);
 
-        // Se muestran las instrucciones del lado del laberinto
+        // Show instructions beside the maze
         switch (y)
         {
         case 0:
@@ -183,6 +183,6 @@ void drawMaze(const Maze &maze, WORD wallColor)
         }
     }
 
-    // Restaura a los colores originales
+    // Restore default colors
     SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
 }

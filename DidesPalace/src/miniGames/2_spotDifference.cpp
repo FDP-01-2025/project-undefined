@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// === CONFIGURACIÓN DEL BANCO DE DIFERENCIAS ===
+// === SPOT THE DIFFERENCE DATABASE CONFIGURATION ===
 namespace {
     const pair<string, string> DIFERENCIAS[6] = {
         {"  La maromota le dijo hola al dragon que volaba sobre el cielo\n                    ║   La maromota le dijo ola al dragon que volaba sobre el cielo", "ola"},
@@ -19,7 +19,7 @@ namespace {
 
     int currentDifferenceIndex = 0;
 
-    // Normalización para comparar de forma flexible
+    // Normalization for case-insensitive and space-ignoring comparison
     bool checkAnswer(const string& answer, const string& correct) {
         string normalized = answer;
         transform(normalized.begin(), normalized.end(), normalized.begin(), ::tolower);
@@ -32,7 +32,7 @@ namespace {
         return normalized == normalizedCorrect;
     }
 
-    // Dibuja un marco con bordes y título opcional
+    // Draws a box frame with optional title
     void drawFrame(int posX, int posY, int width, int height, const string& title = "") {
         moveCursor(posX, posY);
         cout << "╔";
@@ -54,7 +54,7 @@ namespace {
         cout << "╝";
     }
 
-    // Centra texto dentro de un marco
+    // Centers text vertically and horizontally within a frame
     void centerTextInFrame(int frameX, int frameY, int frameWidth, int frameHeight, const string& text, int yOffset = 0) {
         int textPosX = frameX + (frameWidth - text.length()) / 2;
         int textPosY = frameY + (frameHeight / 2) + yOffset;
@@ -63,63 +63,63 @@ namespace {
     }
 }
 
-// === FUNCIÓN PRINCIPAL DEL MINIJUEGO ===
+// === MAIN MINIGAME FUNCTION ===
 bool playSpotDifference(int posX, int posY) {
-    // Limpiar pantalla para mantener estética
+    // Clear screen before drawing
     system("cls");
 
-    // === Marco principal (verde) ===
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Verde
+    // === Main container frame (green) ===
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
     drawFrame(posX, posY, 100, 20, " ENCUENTRA LA DIFERENCIA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
-    // Verificar si se completaron todas las diferencias
+    // Check if we've shown all differences
     if (currentDifferenceIndex >= sizeof(DIFERENCIAS) / sizeof(DIFERENCIAS[0])) {
-        currentDifferenceIndex = 0; // Reiniciar para futuras sesiones
+        currentDifferenceIndex = 0; // Reset index for replayability
         return true;
     }
 
     auto diferencia = DIFERENCIAS[currentDifferenceIndex];
 
-    // === Marco de pregunta (rojo) ===
+    // === Question display frame (red) ===
     int questionFrameX = posX + 5;
     int questionFrameY = posY + 3;
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Rojo
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
     drawFrame(questionFrameX, questionFrameY, 80, 7, " ORACIONES ");
     centerTextInFrame(questionFrameX, questionFrameY, 60, 5, "Encuentra la palabra o número diferente(palabra de abajo):");
     moveCursor(questionFrameX + 2, questionFrameY + 3);
     cout << diferencia.first;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
-    // === Marco de respuesta (azul) ===
+    // === Answer input frame (blue) ===
     int answerFrameX = posX + 5;
     int answerFrameY = posY + 10;
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9); // Azul
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
     drawFrame(answerFrameX, answerFrameY, 80, 5, " RESPUESTA ");
     moveCursor(answerFrameX + 10, answerFrameY + 2);
     cout << "> ";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
-    // Tomar la respuesta
+    // Get player's answer input
     string respuesta;
     getline(cin, respuesta);
 
-    // Verificar si es correcta
+    // Check if answer matches the difference
     bool isCorrect = checkAnswer(respuesta, diferencia.second);
 
-    // === Marco de resultado ===
+    // === Result display frame ===
     int resultFrameX = posX + 5;
     int resultFrameY = posY + 16;
 
     if (isCorrect) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Verde
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
         drawFrame(resultFrameX, resultFrameY, 60, 3, " RESULTADO ");
         centerTextInFrame(resultFrameX, resultFrameY, 60, 3, "¡Correcto!");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-        currentDifferenceIndex++; // Avanza a la siguiente pregunta
+        currentDifferenceIndex++; // Advance to next difference
         return true;
     } else {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Rojo
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
         drawFrame(resultFrameX, resultFrameY, 60, 3, " RESULTADO ");
         string resultText = "Incorrecto. Era: " + diferencia.second;
         centerTextInFrame(resultFrameX, resultFrameY, 60, 3, resultText);
