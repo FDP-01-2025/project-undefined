@@ -4,86 +4,117 @@
 #include <windows.h>
 #include <string>
 
-#define WINDOW_WIDHT 80
-#define WINDOW_HEIGHT 25
-
 using namespace std;
 
-void drawBackground() {
+void drawBackground()
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    for (int y = 0; y < WINDOW_HEIGHT; ++y) {
-        for (int x = 0; x < WINDOW_WIDHT; ++x) {
+    //Get the console size
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
+
+    for (int y = 0; y < consoleHeight; ++y)
+    {
+        for (int x = 0; x < consoleWidth; ++x)
+        {
             moveCursor(x, y);
 
-            if ((x + y) % 17 == 0) {
-                // Color para estrellas (#fff3b0 → amarillo claro)
+            if ((x + y) % 17 == 0)
+            {
+                // Light yellow stars (#fff3b0)
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                 cout << "*";
-            } else if (x == 0 || x == WINDOW_WIDHT - 1) {
-                // Muros verticales (#335c67 → azul oscuro)
+            }
+            else if (x == 0 || x == consoleWidth - 1)
+            {
+                // Dark blue vertical walls
                 SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
                 cout << "|";
-            } else if (y == 0 || y == WINDOW_HEIGHT - 1) {
-                // Muros horizontales
+            }
+            else if (y == 0 || y == consoleHeight - 1)
+            {
+                // Dark blue horizontal walls
                 SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
                 cout << "-";
-            } else {
+            }
+            else
+            {
                 cout << " ";
             }
         }
     }
 }
 
-void showMenu() {
+void showMenu()
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     drawBackground();
 
-    // Texto en rojo fuerte (#9e2a2b)
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);
+    // Text in yellow color
+    setColor(6);
 
     string titleArt[] = {
-        "  ____ ___ ____  ____  _____ ____  _____      _    ____ ___  ",
-        " |  _ \\_ _|  _ \\|  _ \\| ____|  _ \\| ____|    / \\  |  _ \\_ _| ",
-        " | | | | || | | | | | |  _| | | | |  _|     / _ \\ | | | | |  ",
-        " | |_| | || |_| | |_| | |___| |_| | |___   / ___ \\| |_| | |  ",
-        " |____/___|____/|____/|_____|____/|_____| /_/   \\_\\___/___|  ",
-        "                       DIDESPALACE                           "
-    };
+        "██████╗░██╗██████╗░███████╗░██████╗   ██████╗░░█████╗░██╗░░░░░░█████╗░░█████╗░███████╗",
+        "██╔══██╗██║██╔══██╗██╔════╝██╔════╝   ██╔══██╗██╔══██╗██║░░░░░██╔══██╗██╔══██╗██╔════╝",
+        "██║░░██║██║██║░░██║█████╗░░╚█████╗░   ██████╔╝███████║██║░░░░░███████║██║░░╚═╝█████╗░░",
+        "██║░░██║██║██║░░██║██╔══╝░░░╚═══██╗   ██╔═══╝░██╔══██║██║░░░░░██╔══██║██║░░██╗██╔══╝░░",
+        "██████╔╝██║██████╔╝███████╗██████╔╝   ██║░░░░░██║░░██║███████╗██║░░██║╚█████╔╝███████╗",
+        "╚═════╝░╚═╝╚═════╝░╚══════╝╚═════╝░   ╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚══════╝",
+        "                                    DIDESPALACE                                         "};
 
-    int y = 3;
-    for (const string& line : titleArt) {
-        moveCursor((WINDOW_WIDHT - line.length()) / 2, y++);
-        cout << line;
-    }
+    // Approximate width and height of the menu box.
+    int boxWidth = 85;
+    int boxHeight = 13;
 
+    // Get actual console size
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
+
+    // Centered coordinates
+    int x = (consoleWidth - boxWidth) / 2;
+    int y = (consoleHeight - boxHeight) / 2;
+
+    // Options
     string opt1 = "1. Empezar";
     string opt2 = "2. Nivel 2";
     string opt3 = "3. Nivel 3";
-     string opt4 = "4. Nivel 4";
+    string opt4 = "4. Nivel 4";
     string opt5 = "ESC. Salir del juego";
     string prompt = "";
 
-    y += 2;
+    int currentY = y;
 
-    moveCursor((WINDOW_WIDHT - opt1.size()) / 2, y++);
+    // Show centered title
+    for (const string &line : titleArt)
+    {
+        moveCursor(x, currentY++);
+        cout << line;
+    }
+
+    // space after the title
+    currentY++; 
+
+    // Show centered options
+    moveCursor(x + (boxWidth - opt1.size()) / 2, currentY++);
     cout << opt1;
 
-    moveCursor((WINDOW_WIDHT - opt2.size()) / 2, y++);
+    moveCursor(x + (boxWidth - opt2.size()) / 2, currentY++);
     cout << opt2;
 
-    moveCursor((WINDOW_WIDHT - opt3.size()) / 2, y++);
+    moveCursor(x + (boxWidth - opt3.size()) / 2, currentY++);
     cout << opt3;
 
-    moveCursor((WINDOW_WIDHT - opt4.size()) / 2, y++);
+    moveCursor(x + (boxWidth - opt4.size()) / 2, currentY++);
     cout << opt4;
 
-    moveCursor((WINDOW_WIDHT - opt5.size()) / 2, y++);
+    moveCursor(x + (boxWidth - opt5.size()) / 2, currentY + 2);
+    setColor(12); // Bright red color for the exit option
     cout << opt5;
 
-    moveCursor((WINDOW_WIDHT - prompt.size()) / 2, y++);
+    moveCursor(x + (boxWidth - prompt.size()) / 2, currentY++);
     cout << prompt;
 
-    // Restaurar color normal
+    // Restore normal color
     SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
