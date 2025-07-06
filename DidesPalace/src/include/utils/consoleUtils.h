@@ -25,6 +25,6 @@ void setColor(WORD color);
 int getConsoleWidth();
 int getConsoleHeight();
 // Displays an animated message on the console
-void showAnimatedMessage(const std::string &message, int delay = 70, int waitAfter = 1500);
+void showAnimatedMessage(const std::string &message, int delay = 50, int waitAfter = 1500);
 
 #endif

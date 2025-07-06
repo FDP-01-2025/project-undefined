@@ -101,7 +101,7 @@ void showMessageBox(const string &message)
 
 void showMessageBoxMiniGame(const string &message, int color)
 {
-    int boxWidth = 70;
+    int boxWidth = 80;
     int boxHeight = 7;
 
     int consoleWidth = getConsoleWidth();
@@ -156,10 +156,15 @@ void showMessageBoxMiniGame(const string &message, int color)
     }
 
     // Message centered inside the box
-    moveCursor(x + 2, y + 2);
+    int messageX = x + (boxWidth - message.length()) / 2;
+    int messageY = y + 2; 
+    moveCursor(messageX, messageY);
     cout << message;
-    moveCursor(x + 2, y + 4);
-    cout << "Presiona una tecla para continuar...";
+    string prompt = "Presiona una tecla para continuar...";
+    int promptX = x + (boxWidth - prompt.length()) / 2;
+    int promptY = y + 4;
+    moveCursor(promptX, promptY);
+    cout << prompt;
 
     _getch();
 

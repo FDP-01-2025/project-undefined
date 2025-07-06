@@ -57,6 +57,7 @@ bool playKeySmash(int posX, int posY)
     while (bossHP > 0)
     {
         int numKeys = 5 + ronda - 1;
+        int scoreToWin = 40 + (ronda - 1) * 10; // Score needed to win the round
         // Initialize starting speed
         int speed = 300 - (ronda - 1) * 40; // Speed decreases as rounds increase
         if (speed < 80)
@@ -65,7 +66,11 @@ bool playKeySmash(int posX, int posY)
         }
 
         // Funcion to show an animated message (Title of the game)
-        showAnimatedMessage("SMASH KEY - RONDA " + to_string(ronda) + "\nPresiona las teclas correctas antes de que lleguen al final" + "\n\n➣ Letras: " + to_string(numKeys) + "\n➣ Velocidad: " + to_string(speed) + " ms");
+        showAnimatedMessage("SMASH KEY - RONDA " + to_string(ronda) 
+        + "\nPresiona las teclas correctas antes de que lleguen al final" 
+        + "\n\n➣ Letras: " + to_string(numKeys) 
+        + "\n➣ Velocidad: " + to_string(speed) + " ms" + 
+        + "\n➣ Objetivo: Llega a " + to_string(scoreToWin) + " puntos para ganar la ronda");
 
         // Draws the frame one pixel before to enclose the game area
         drawFrame(startX - 1, startY - 1);
@@ -146,6 +151,9 @@ bool playKeySmash(int posX, int posY)
                     // If letter reaches bottom of game area, it's considered a failure
                     if (keys[i].y > startY + HEIGHT)
                     {
+                        Sleep(2000); // Wait for 2 second before ending the game
+                        moveCursor(startX, startY + HEIGHT + 5);
+                        system("pause");
                         delete[] keys; // Free memory
                         return false;  // Ends game
                     }
@@ -158,7 +166,7 @@ bool playKeySmash(int posX, int posY)
             cout << "✽ Puntaje: " << score << "    ";
 
             // If score reaches 50, player wins
-            if (score > 49)
+            if (score >= scoreToWin)
             {
                 // Wait for 2 seconds before continuing
                 Sleep(2000);
@@ -168,8 +176,9 @@ bool playKeySmash(int posX, int posY)
                 cout << "¡Felicidades pasaste la ronda!";
                 moveCursor(startX, startY + HEIGHT + 4);
                 cout << "Presiona una tecla para continuar...";
-                _getch(); // Wait for player to press a key
-                ronda++; // Increase round number
+                _getch();         // Wait for player to press a key
+                ronda++;          // Increase round number
+                scoreToWin += 10; // Increase score needed to win next round
 
                 delete[] keys; // Free memory
                 return true;   // Ends game

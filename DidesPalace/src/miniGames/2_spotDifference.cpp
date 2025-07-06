@@ -6,15 +6,19 @@
 
 using namespace std;
 
+const int WIDTH = 100; // Width of the game area
+const int HEIGHT = 20; // Height of the game area
+
+
 // === SPOT THE DIFFERENCE DATABASE CONFIGURATION ===
 namespace {
     const pair<string, string> DIFERENCIAS[6] = {
-        {"  La maromota le dijo hola al dragon que volaba sobre el cielo\n                    ║   La maromota le dijo ola al dragon que volaba sobre el cielo", "ola"},
-        {"  Tengo 15 manzanas en mi canasta\n                    ║   Tengo 16 manzanas en mi canasta", "16"},
-        {"  El perro corrio rapidamente al parque\n                    ║   El can corrio rapidamente al parque", "can"},
-        {"  La luna brilla en el cielo\n                    ║   La luna brila en el cielo", "brila"},
-        {"  El leon ruge en la selva\n                    ║   El leon ruje en la selva", "ruje"},
-        {"  La casa esta lejos\n                    ║   Casa esta lejos", "La"}
+        {"  La maromota le dijo hola al dragon que volaba sobre el cielo\n                              ║    La maromota le dijo ola al dragon que volaba sobre el cielo", "ola"},
+        {"  Tengo 15 manzanas en mi canasta\n                              ║    Tengo 16 manzanas en mi canasta", "16"},
+        {"  El perro corrio rapidamente al parque\n                              ║    El can corrio rapidamente al parque", "can"},
+        {"  La luna brilla en el cielo\n                              ║    La luna brila en el cielo", "brila"},
+        {"  El leon ruge en la selva\n                              ║    El leon ruje en la selva", "ruje"},
+        {"  La casa esta lejos\n                              ║    Casa esta lejos", "La"}
     };
 
     int currentDifferenceIndex = 0;
@@ -68,9 +72,15 @@ bool playSpotDifference(int posX, int posY) {
     // Clear screen before drawing
     system("cls");
 
+    // Calculate coordinates to center the game frame
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
+    int startX = (consoleWidth - WIDTH) / 2;
+    int startY = (consoleHeight - HEIGHT) / 2 - 1;
+
     // === Main container frame (green) ===
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
-    drawFrame(posX, posY, 100, 20, " ENCUENTRA LA DIFERENCIA ");
+    drawFrame(startX, startY, WIDTH , HEIGHT, " ENCUENTRA LA DIFERENCIA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
     // Check if we've shown all differences
@@ -82,21 +92,21 @@ bool playSpotDifference(int posX, int posY) {
     auto diferencia = DIFERENCIAS[currentDifferenceIndex];
 
     // === Question display frame (red) ===
-    int questionFrameX = posX + 5;
-    int questionFrameY = posY + 3;
+    int questionFrameX = startX + 5;
+    int questionFrameY = startY + 3;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
     drawFrame(questionFrameX, questionFrameY, 80, 7, " ORACIONES ");
-    centerTextInFrame(questionFrameX, questionFrameY, 60, 5, "Encuentra la palabra o número diferente(palabra de abajo):");
-    moveCursor(questionFrameX + 2, questionFrameY + 3);
+    centerTextInFrame(questionFrameX, questionFrameY, 70, 5, "Encuentra la palabra o número diferente (palabra de abajo):");
+    moveCursor(questionFrameX + 3, questionFrameY + 3);
     cout << diferencia.first;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
     // === Answer input frame (blue) ===
-    int answerFrameX = posX + 5;
-    int answerFrameY = posY + 10;
+    int answerFrameX = startX + 5;
+    int answerFrameY = startY + 10;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
     drawFrame(answerFrameX, answerFrameY, 80, 5, " RESPUESTA ");
-    moveCursor(answerFrameX + 10, answerFrameY + 2);
+    moveCursor(answerFrameX + 6, answerFrameY + 2);
     cout << "> ";
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
@@ -108,8 +118,8 @@ bool playSpotDifference(int posX, int posY) {
     bool isCorrect = checkAnswer(respuesta, diferencia.second);
 
     // === Result display frame ===
-    int resultFrameX = posX + 5;
-    int resultFrameY = posY + 16;
+    int resultFrameX = startX + 5;
+    int resultFrameY = startY + 16;
 
     if (isCorrect) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
