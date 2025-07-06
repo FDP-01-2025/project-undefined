@@ -7,6 +7,7 @@
 #include "bosses.h"
 #include <utils/consoleUtils.h>
 #include "levels/level3.h"
+#include "levels/level4.h"
 #include "./minigames/3_numberSort.h"
 using namespace std;
 
@@ -35,8 +36,7 @@ bool Level3()
     cout << title;
     // Draw initial maze
     // Parameters: Maze instance and wall color
-    drawMaze(maze, FOREGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
+    drawMaze(maze, 1);
     // This code block runs continuously unless 'q' or ESC is pressed
     while (true)
     {
@@ -55,11 +55,13 @@ bool Level3()
         // Function that handles movement (Parameters: Maze instance and captured key)
         if (movePlayer(maze, key)) {
             // Only redraw if movement was valid
-            drawMaze(maze, FOREGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+            updatePlayerStats(maze); // updates only the right side (current position and controls)
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
                 bossBattleRPG(playNumberSort);
+                Level4();
                 return false; // If player survives, level ends
+               
             }
         }
         
