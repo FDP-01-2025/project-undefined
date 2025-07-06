@@ -1,9 +1,12 @@
 #include <windows.h>
+#include <string>
+#include <iostream>
 #include <utils/consoleUtils.h>
 
 // Function to move the cursor
-void moveCursor(int x, int y) {
-    COORD coord = { (SHORT)x, (SHORT)y };
+void moveCursor(int x, int y)
+{
+    COORD coord = {(SHORT)x, (SHORT)y};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
@@ -45,20 +48,107 @@ void consoleCenter()
 }
 
 // Changes the text color in the console
-void setColor(WORD color) {
+void setColor(WORD color)
+{
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
 // Gets the console width
-int getConsoleWidth(){
+int getConsoleWidth()
+{
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    return  csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    return csbi.srWindow.Right - csbi.srWindow.Left + 1;
 }
 
 // Gets the console height
-int getConsoleHeight(){
+int getConsoleHeight()
+{
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+}
+
+/// Displays a centered message with typewriter-like animation (multi-line support)
+void showAnimatedMessage(const std::string &message, int delay, int waitAfter)
+{
+    // Clear screen
+    system("cls"); 
+
+    // Console size
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
+
+    // Count how many lines there are (\n).
+    int lineCount = 1;
+    for (int i = 0; i < message.length(); ++i)
+    {
+        if (message[i] == '\n')
+            ++lineCount;
+    }
+
+    // Calculate the vertical position to center all lines
+    int yStart = (consoleHeight - lineCount) / 2;
+
+    // Displays each line one by one
+    int i = 0;
+    int currentLine = 0;
+    while (i < message.length())
+    {
+        // Extract line manually (\n or end)
+        std::string line = "";
+        while (i < message.length() && message[i] != '\n')
+        {
+            line += message[i];
+            ++i;
+        }
+        ++i; // break'\n'
+
+        // Calculate horizontal centered position
+        int realLength = 0;
+        for (int j = 0; j < line.length(); ++j)
+            realLength += (line[j] < 0 || line[j] > 127) ? 2 : 1;
+        int x = (consoleWidth - realLength) / 2;
+
+        // Show line with animation
+        setColor(14);
+        moveCursor(x, yStart + currentLine);
+        for (int j = 0; j < line.length(); ++j)
+        {
+            std::cout << line[j] << std::flush;
+            Sleep(delay);
+        }
+
+        ++currentLine;
+    }
+
+    Sleep(waitAfter);
+
+    // Delete displayed lines
+    currentLine = 0;
+    i = 0;
+    while (i < message.length())
+    {
+        std::string line = "";
+        while (i < message.length() && message[i] != '\n')
+        {
+            line += message[i];
+            ++i;
+        }
+        ++i;
+
+        // Delete with spaces
+        int realLength = 0;
+        for (int j = 0; j < line.length(); ++j)
+            realLength += (line[j] < 0 || line[j] > 127) ? 2 : 1;
+        int x = (consoleWidth - realLength) / 2;
+
+        moveCursor(x, yStart + currentLine);
+        for (int j = 0; j < realLength; ++j)
+            std::cout << " ";
+
+        ++currentLine;
+    }
+
+    Sleep(300);
 }

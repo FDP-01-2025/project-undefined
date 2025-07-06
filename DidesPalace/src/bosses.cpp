@@ -5,10 +5,13 @@
 #include <conio.h> // For key capture
 #include "minigames/2_spotDifference.h" // Included minigame
 #include "utils/consoleUtils.h" // Custom console utilities
+#include "../include/bosses.h" // For boss battle handling
 using namespace std;
 
 const int FRAME_WIDTH = 120; // Battle frame width
 const int FRAME_HEIGHT = 35; // Battle frame height
+int bossHP = 100;  // Changed from 1 to 100
+int ronda = 1; // Round counter
 
 // ================= Visual Functions ===================
 
@@ -122,7 +125,6 @@ void showBossArt(const string& path, int x, int y) {
 
 // Main function for the RPG boss battle system
 void bossBattleRPG(bool (*minigame)(int, int)) {
-    int bossHP = 100;  // Changed from 1 to 100
     int playerHP = 100;
     bool bossDefeated = false;
 
@@ -139,12 +141,12 @@ void bossBattleRPG(bool (*minigame)(int, int)) {
 
         // UI in Spanish
         moveCursor(90, 5);  cout << "╔══════════════╗";
-        moveCursor(90, 6);  cout << "║  Jefe: ???   ║";
+        moveCursor(90, 6);  cout << "║ -> Jefe:     ║";
         moveCursor(90, 7);  cout << "║ HP: " << bossHP << "      ║";
         moveCursor(90, 8);  cout << "╚══════════════╝";
 
         moveCursor(90, 10); cout << "╔══════════════╗";
-        moveCursor(90, 11); cout << "║  Tú          ║";
+        moveCursor(90, 11); cout << "║ ♥ Tú         ║";
         moveCursor(90, 12); cout << "║ HP: " << playerHP << "      ║";
         moveCursor(90, 13); cout << "╚══════════════╝";
 

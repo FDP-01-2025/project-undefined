@@ -2,26 +2,29 @@
 #define CONSOLE_UTILS_H
 
 #include <windows.h>
+#include <string>
 
-// Configuración de la ventana
+// Window configuration
 const int WINDOW_WIDHT = 150;
 const int WINDOW_HEIGHT = 40;
 
-// Colores de consola
+// Console colors
 const WORD COLOR_DEFAULT = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
 const WORD COLOR_PLAYER = FOREGROUND_RED | FOREGROUND_INTENSITY;
 const WORD COLOR_BOSS = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 const WORD COLOR_STATS = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
 
-//Funciones implementadas en consoleUtils.cpp
+//Functions implemented in consoleUtils.cpp
 void consoleSettings();
 void consoleCenter();
-//Mueve el cursor a una posición específica en la consola
+//Moves the cursor to a specific position on the console
 void moveCursor(int x, int y);
-// Cambia el color del texto en la consola
+// Change the color of the text in the console
 void setColor(WORD color);
-// Obtiene el ancho y alto de la consola
+// Gets the width and height of the console
 int getConsoleWidth();
 int getConsoleHeight();
+// Displays an animated message on the console
+void showAnimatedMessage(const std::string &message, int delay = 70, int waitAfter = 1500);
 
 #endif
