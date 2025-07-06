@@ -1,15 +1,14 @@
 #include "minigames/3_numberSort.h"
-#include "bosses.h"
 #include <vector>
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <conio.h>
 #include <iostream>
 #include <windows.h>
-#include "utils/consoleUtils.h"
+#include "../include/utils/consoleUtils.h"
 
 using namespace std;
-using namespace std::chrono;
 
 namespace
 {
@@ -128,16 +127,77 @@ bool playNumberSort(int posX, int posY)
     int answerFrameY = posY + 10;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9); // Blue text
     drawFrame(answerFrameX, answerFrameY, 50, 5, " RESPUESTA ");
-    moveCursor(answerFrameX + 10, answerFrameY + 2);
-    cout << "> ";
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default for input
 
-    // Get answer
-    string respuesta;
-    getline(cin, respuesta);
+    const int durationSeconds = 15;
+    DWORD startTime = GetTickCount();
 
+    int remainingSeconds = durationSeconds;
+    string input = ""; // Store typed input here
+    int lastShown = durationSeconds + 1;
+
+    while (true)
+    {
+        DWORD now = GetTickCount();
+        DWORD elapsed = now - startTime;
+        int secondsPassed = elapsed / 1000;
+        remainingSeconds = durationSeconds - secondsPassed;
+
+        // Update countdown only if it has changed
+        if (remainingSeconds != lastShown && remainingSeconds >= 0)
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << "                     "; // Clear previous text
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << remainingSeconds << " segundos restantes...";
+            lastShown = remainingSeconds;
+        }
+
+        // Show current input
+        moveCursor(answerFrameX + 12, answerFrameY + 2);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+
+        cout << "> " << input << " \b"; // Display user input
+
+        // Check for non-blocking key press
+        if (_kbhit())
+        {
+            char c = _getch();
+
+            // If Enter is pressed, finish input
+            if (c == '\r')
+            {
+                break;
+            }
+            // Handle backspace
+            else if (c == 8 && !input.empty())
+            {
+                input.pop_back();
+                moveCursor(answerFrameX + 12 + input.length(), answerFrameY + 2);
+                cout << " \b";
+            }
+            // Add printable character to input
+            else if (isprint(c))
+            {
+                input += c;
+            }
+        }
+
+        // If time is up, break the loop
+        if (remainingSeconds <= 0)
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << "                     "; // Clear previous text
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << "¡Tiempo terminado!\n";
+            break;
+        }
+
+        Sleep(50); // Small delay to reduce CPU usage
+    }
     // Verify answer
-    bool isCorrect = checkAnswer(respuesta, pregunta.second);
+    bool isCorrect = checkAnswer(input, pregunta.second);
 
     // Draw result frame
     int resultFrameX = posX + 5;
@@ -158,7 +218,7 @@ bool playNumberSort(int posX, int posY)
     {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Red for incorrect
         drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
-        string resultText = "¡Incorrecto! La respuesta era: " + pregunta.second;
+        string resultText = "La respuesta era: " + pregunta.second;
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, resultText);
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         return false;
