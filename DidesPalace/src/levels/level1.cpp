@@ -30,7 +30,7 @@ bool Level1()
     cout << "==== LEVEL 1 =====";
     // Draw initial maze
     // Parameters passed: Maze instance and the color of the maze walls
-    drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    drawMaze(maze, 2);
 
     // This code block runs continuously unless 'q' or ESC is pressed
     while (true)
@@ -50,7 +50,7 @@ bool Level1()
         // Function that enables movement (Parameters it receives: Maze instance and captured key)
         if (movePlayer(maze, key)) {
             // Only redraw if there was valid movement
-            drawMaze(maze, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+              updatePlayerStats(maze); // updates only the right side (current position and controls)
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
                 bossBattleRPG(playriddles);

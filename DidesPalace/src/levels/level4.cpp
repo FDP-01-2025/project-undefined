@@ -36,7 +36,7 @@ bool Level4()
 
     // Draw initial maze
     // Parameters: Maze instance and wall color
-    drawMaze(maze, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    drawMaze(maze, 11);
 
     // This code block runs continuously unless 'q' or ESC is pressed
     while (true)
@@ -60,9 +60,9 @@ bool Level4()
         if (movePlayer(maze, key))
         {
             // Only redraw if movement was valid
-            drawMaze(maze, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-
-            // If player reaches the boss (B), start minigame
+           updatePlayerStats(maze); // Updates only the right side (current position and controls)
+            
+           // If player reaches the boss (B), start minigame
             if (maze.grid[maze.playerY][maze.playerX] == 'B') // If reaches boss
             {
                 bossBattleRPG(playKeySmash); // Call Key Smash minigame

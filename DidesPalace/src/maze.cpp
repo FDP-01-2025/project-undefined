@@ -101,7 +101,7 @@ char typeWall(const Maze &maze, int y, int x)
 }
 
 // Function to draw the maze
-void drawMaze(const Maze &maze, WORD wallColor)
+void drawMaze(const Maze &maze, int wallColor)
 {
     // Enable color changes in console
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -185,4 +185,45 @@ void drawMaze(const Maze &maze, WORD wallColor)
 
     // Restore default colors
     SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
+}
+
+// Function that only updates the player position in the console
+void updatePlayerPosition(const Maze &maze, int oldX, int oldY)
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Erase the previous position
+    moveCursor(marginX + oldX, marginY + oldY);
+    SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
+    cout << '.';
+
+    // Draw player in the new position
+    moveCursor(marginX + maze.playerX, marginY + maze.playerY);
+    SetConsoleTextAttribute(hConsole, COLOR_PLAYER);
+    cout << "♡";
+
+    // Reset color
+    SetConsoleTextAttribute(hConsole, COLOR_DEFAULT);
+}
+
+
+// Function that updates the player's position in the right-side panel
+void updatePlayerStats(const Maze &maze)
+{
+    // Get console handle
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord;
+
+    // Set cursor to the coordinates where the position text is displayed
+    coord.X = marginX + maze.cols + 2;
+    coord.Y = marginY + 2;
+
+    // Move the cursor to the desired position
+    SetConsoleCursorPosition(hConsole, coord);
+
+    // Set the text color to the stats color
+    SetConsoleTextAttribute(hConsole, COLOR_STATS);
+
+    // Display updated player coordinates
+    cout << "Pos: (" << maze.playerX << "," << maze.playerY << ")  ";
 }

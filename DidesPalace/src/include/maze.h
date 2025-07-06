@@ -22,8 +22,10 @@ struct Maze
 
 // FUNCTIONS (Will be implemented in maze.cpp)
 void loadMazeFromFile(Maze &maze, const char *filePath);
-void drawMaze(const Maze &maze, WORD wallColor);
+void drawMaze(const Maze &maze, int wallColor);
 bool isWall(const Maze &maze, int y, int x);
 char typeWall(const Maze &maze, int y, int x);
+void updatePlayerPosition(const Maze &maze, int oldX, int oldY);
+void updatePlayerStats(const Maze &maze);
 
 #endif

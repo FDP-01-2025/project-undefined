@@ -34,12 +34,19 @@ bool movePlayer(Maze &maze, char direction) {
     // and not a wall (#)
     if (!isWall(maze, newY, newX)) 
     {
+        // Store previous position
+        int oldX = maze.playerX;
+        int oldY = maze.playerY;
+
         // Clears current position
         maze.grid[maze.playerY][maze.playerX] = '.';
 
         // Updates player coordinates
         maze.playerX = newX;
         maze.playerY = newY;
+
+        // Update only the affected positions in the console
+        updatePlayerPosition(maze, oldX, oldY);
         
         return true; // Valid movement
     }
