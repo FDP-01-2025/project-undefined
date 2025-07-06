@@ -1,24 +1,43 @@
 #include "minigames/3_numberSort.h"
-#include "bosses.h"
 #include <vector>
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <conio.h>
 #include <iostream>
 #include <windows.h>
-#include "utils/consoleUtils.h"
+#include "../include/utils/consoleUtils.h"
 
 using namespace std;
-using namespace std::chrono;
 
 namespace
 {
     // Number list
     const vector<pair<string, string>> LISTA = {
-        {"Ordena los siguientes numeros: 3, 1, 2, 4", "1, 2, 3, 4"},
-        {"Ordena los siguientes numeros: 5, 3, 7, 1", "1, 3, 5, 7"},
-        {"Ordena los siguientes numeros: 20, 10, 5, 15", "5, 10, 15, 20"},
-        {"Ordena los siguientes numeros: 2, 8, 4, 6", "2, 4, 6, 8"}};
+        {"Ordena los siguientes numeros: 3-1-2-4", "1-2-3-4"},
+        {"Ordena los siguientes numeros: 5-3-7-1", "1-3-5-7"},
+        {"Ordena los siguientes numeros: 20-10-5-15", "5-10-15-20"},
+        {"Ordena los siguientes numeros: 2-8-4-6", "2-4-6-8"},
+        {"Ordena los siguientes numeros: 11-3-7-5", "3-5-7-11"},
+        {"Ordena los siguientes numeros: 9-1-7-5", "1-5-7-9"},
+        {"Ordena los siguientes numeros: 16-4-1-9", "1-4-9-16"},
+        {"Ordena los siguientes numeros: 13-17-2-19", "2-13-17-19"},
+        {"Ordena los siguientes numeros: 25-10-5-20", "5-10-20-25"},
+        {"Ordena los siguientes numeros: 3-2-1-4", "1-2-3-4"},
+        {"Ordena los siguientes numeros: 81-9-27-3", "3-9-27-81"},
+        {"Ordena los siguientes numeros: 7-5-3-1", "1-3-5-7"},
+        {"Ordena los siguientes numeros: 100-10-1000-1", "1-10-100-1000"},
+        {"Ordena los siguientes numeros: 64-8-16-4", "4-8-16-64"},
+        {"Ordena los siguientes numeros: 7-28-21-14", "7-14-21-28"},
+        {"Ordena los siguientes numeros: 6-36-18-12", "6-12-18-36"},
+        {"Ordena los siguientes numeros: 49-25-9-1", "1-9-25-49"},
+        {"Ordena los siguientes numeros: 15-5-10-20", "5-10-15-20"},
+        {"Ordena los siguientes numeros: 4-3-2-1", "1-2-3-4"},
+        {"Ordena los siguientes numeros: 100-50-25-75", "25-50-75-100"},
+        {"Ordena los siguientes numeros: 121-36-81-49", "36-49-81-121"},
+        {"Ordena los siguientes numeros: 30-10-50-40", "10-30-40-50"},
+        {"Ordena los siguientes numeros: 6-3-9-12", "3-6-9-12"},
+        {"Ordena los siguientes numeros: 24-16-32-8", "8-16-24-32"}};
 
     // variable to move the index
     int currentQuestionIndex = 0;
@@ -108,16 +127,77 @@ bool playNumberSort(int posX, int posY)
     int answerFrameY = posY + 10;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9); // Blue text
     drawFrame(answerFrameX, answerFrameY, 50, 5, " RESPUESTA ");
-    moveCursor(answerFrameX + 10, answerFrameY + 2);
-    cout << "> ";
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default for input
 
-    // Get answer
-    string respuesta;
-    getline(cin, respuesta);
+    const int durationSeconds = 15;
+    DWORD startTime = GetTickCount();
 
+    int remainingSeconds = durationSeconds;
+    string input = ""; // Store typed input here
+    int lastShown = durationSeconds + 1;
+
+    while (true)
+    {
+        DWORD now = GetTickCount();
+        DWORD elapsed = now - startTime;
+        int secondsPassed = elapsed / 1000;
+        remainingSeconds = durationSeconds - secondsPassed;
+
+        // Update countdown only if it has changed
+        if (remainingSeconds != lastShown && remainingSeconds >= 0)
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << "                     "; // Clear previous text
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << remainingSeconds << " segundos restantes...";
+            lastShown = remainingSeconds;
+        }
+
+        // Show current input
+        moveCursor(answerFrameX + 12, answerFrameY + 2);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+
+        cout << "> " << input << " \b"; // Display user input
+
+        // Check for non-blocking key press
+        if (_kbhit())
+        {
+            char c = _getch();
+
+            // If Enter is pressed, finish input
+            if (c == '\r')
+            {
+                break;
+            }
+            // Handle backspace
+            else if (c == 8 && !input.empty())
+            {
+                input.pop_back();
+                moveCursor(answerFrameX + 12 + input.length(), answerFrameY + 2);
+                cout << " \b";
+            }
+            // Add printable character to input
+            else if (isprint(c))
+            {
+                input += c;
+            }
+        }
+
+        // If time is up, break the loop
+        if (remainingSeconds <= 0)
+        {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << "                     "; // Clear previous text
+            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            cout << "¡Tiempo terminado!\n";
+            break;
+        }
+
+        Sleep(50); // Small delay to reduce CPU usage
+    }
     // Verify answer
-    bool isCorrect = checkAnswer(respuesta, pregunta.second);
+    bool isCorrect = checkAnswer(input, pregunta.second);
 
     // Draw result frame
     int resultFrameX = posX + 5;
@@ -138,7 +218,7 @@ bool playNumberSort(int posX, int posY)
     {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Red for incorrect
         drawFrame(resultFrameX, resultFrameY, 50, 3, " RESULTADO ");
-        string resultText = "¡Incorrecto! La respuesta era: " + pregunta.second;
+        string resultText = "La respuesta era: " + pregunta.second;
         centerTextInFrame(resultFrameX, resultFrameY, 50, 3, resultText);
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         return false;
