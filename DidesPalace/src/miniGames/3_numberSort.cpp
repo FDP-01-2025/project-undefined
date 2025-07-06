@@ -101,7 +101,7 @@ bool playNumberSort(int posX, int posY)
 
     // Draw main container frame (green)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green text
-    drawFrame(posX, posY, 60, 20, " ORDENAR NUMEROS ");
+    drawFrame(posX, posY, 60, 20, " ORDENAR NUMEROS (Separalos con '-')");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
     // Verificar si ya se respondieron todos los items
@@ -146,9 +146,9 @@ bool playNumberSort(int posX, int posY)
         if (remainingSeconds != lastShown && remainingSeconds >= 0)
         {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "                     "; // Clear previous text
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << remainingSeconds << " segundos restantes...";
             lastShown = remainingSeconds;
         }
@@ -187,9 +187,9 @@ bool playNumberSort(int posX, int posY)
         if (remainingSeconds <= 0)
         {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "                     "; // Clear previous text
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "¡Tiempo terminado!\n";
             break;
         }
