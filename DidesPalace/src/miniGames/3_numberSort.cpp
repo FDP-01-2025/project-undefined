@@ -39,6 +39,9 @@ namespace
         {"Ordena los siguientes numeros: 6-3-9-12", "3-6-9-12"},
         {"Ordena los siguientes numeros: 24-16-32-8", "8-16-24-32"}};
 
+    //Random order of Number list 
+    vector<pair<string, string>> LIST_RANDOM;
+    bool LIST_RANDOM_INICIALIZED = false;
     // variable to move the index
     int currentQuestionIndex = 0;
 
@@ -101,19 +104,27 @@ bool playNumberSort(int posX, int posY)
 
     // Draw main container frame (green)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green text
-    drawFrame(posX, posY, 60, 20, " ORDENAR NUMEROS ");
+    drawFrame(posX, posY, 60, 20, " ORDENAR NUMEROS (Separalos con '-')");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
-    // Verificar si ya se respondieron todos los items
-    if (currentQuestionIndex >= LISTA.size())
+    // Only shuffle once at the beginning
+    if (!LIST_RANDOM_INICIALIZED)
     {
-        currentQuestionIndex = 0; // Reiniciar para futuras batallas
+        LIST_RANDOM = LISTA; // Copy from original
+        unsigned seed = static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count());
+        shuffle(LIST_RANDOM.begin(), LIST_RANDOM.end(), default_random_engine(seed));
+        LIST_RANDOM_INICIALIZED = true;
+        currentQuestionIndex = 0;
+    }
+
+    if (currentQuestionIndex >= LIST_RANDOM.size())
+    {
+        // All questions used, restart or end
+        LIST_RANDOM_INICIALIZED = false;
         return true;
     }
 
-    // get the question (in order)
-    auto pregunta = LISTA[currentQuestionIndex];
-
+    auto pregunta = LIST_RANDOM[currentQuestionIndex];
     // Draw question frame (red)
     int questionFrameX = posX + 5;
     int questionFrameY = posY + 3;
@@ -146,9 +157,9 @@ bool playNumberSort(int posX, int posY)
         if (remainingSeconds != lastShown && remainingSeconds >= 0)
         {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "                     "; // Clear previous text
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << remainingSeconds << " segundos restantes...";
             lastShown = remainingSeconds;
         }
@@ -187,9 +198,9 @@ bool playNumberSort(int posX, int posY)
         if (remainingSeconds <= 0)
         {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "                     "; // Clear previous text
-            moveCursor(answerFrameX + 60, answerFrameY - 5);
+            moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "¡Tiempo terminado!\n";
             break;
         }
