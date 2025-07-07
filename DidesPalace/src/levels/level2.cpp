@@ -6,6 +6,8 @@
 #include "player.h"
 #include "bosses.h"
 #include "levels/level2.h"
+#include "levels/level3.h"
+#include <utils/consoleUtils.h>
 #include "./minigames/2_spotDifference.h"
 using namespace std;
 
@@ -26,8 +28,10 @@ bool Level2()
 
     // Load the maze (Parameters: Maze instance and file path)
     loadMazeFromFile(maze, "data/levels/level2_map.txt");
-
-    cout << "==== LEVEL 2 =====";
+    cout << "\n";
+    string title = "========= LEVEL 2 =========\n";
+    moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
+    cout << title;
     // Draw initial maze
     // Parameters: Maze instance and wall color
     drawMaze(maze, 5);
@@ -54,6 +58,7 @@ bool Level2()
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
                 bossBattleRPG(playSpotDifference);
+                Level3(); // Proceed to next level after boss battle
                 return false; // If player survives, level ends
             }
         }

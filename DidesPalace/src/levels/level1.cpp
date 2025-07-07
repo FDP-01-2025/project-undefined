@@ -6,6 +6,8 @@
 #include "player.h"
 #include "bosses.h"
 #include "levels/level1.h"
+#include "levels/level2.h"
+#include <utils/consoleUtils.h>
 #include "./minigames/1_riddles.h"
 using namespace std;
 
@@ -27,7 +29,10 @@ bool Level1()
     // Load the maze (Parameters it receives: Maze instance and file path)
     loadMazeFromFile(maze, "data/levels/level1_map.txt");
 
-    cout << "==== LEVEL 1 =====";
+    cout << "\n";
+    string title = "========= LEVEL 1 =========\n";
+    moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
+    cout << title;
     // Draw initial maze
     // Parameters passed: Maze instance and the color of the maze walls
     drawMaze(maze, 2);
@@ -54,6 +59,7 @@ bool Level1()
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
                 bossBattleRPG(playriddles);
+                Level2();
                 return false; // If player survives, level ends
             }
         }

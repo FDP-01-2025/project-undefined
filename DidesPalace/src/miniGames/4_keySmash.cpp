@@ -56,17 +56,17 @@ bool playKeySmash(int posX, int posY)
 
     while (bossHP > 0)
     {
-        int numKeys = 5 + ronda - 1;
-        int scoreToWin = 40 + (ronda - 1) * 10; // Score needed to win the round
+        int numKeys = 4 + ronda - 1;
+        int scoreToWin = 30 + (ronda - 1) * 10; // Score needed to win the round
         // Initialize starting speed
-        int speed = 300 - (ronda - 1) * 40; // Speed decreases as rounds increase
+        int speed = 350 - (ronda - 1) * 40; // Speed decreases as rounds increase
         if (speed < 80)
         {
             speed = 80; // Minimum speed limit
         }
 
         // Funcion to show an animated message (Title of the game)
-        showAnimatedMessage("SMASH KEY - RONDA " + to_string(ronda) 
+        showAnimatedMessage("<<<< SMASH KEY - RONDA " + to_string(ronda) + " >>>>" 
         + "\nPresiona las teclas correctas antes de que lleguen al final" 
         + "\n\n➣ Letras: " + to_string(numKeys) 
         + "\n➣ Velocidad: " + to_string(speed) + " ms" + 
