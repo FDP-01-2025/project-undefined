@@ -246,6 +246,7 @@ void drawColoredProgressBar(int x, int y, int progress)
 // Main function for the RPG boss battle system
 void bossBattleRPG(bool (*minigame)(int, int))
 { 
+    bossHP = 100;
     int playerHP = 100;
     bool bossDefeated = false;
 
