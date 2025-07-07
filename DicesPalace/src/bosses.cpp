@@ -406,7 +406,7 @@ bool bossBattleRPG(bool (*minigame)(int, int), const std::string& bossArt, int c
         currentQuestionIndex = 0; // Reset index for next minigame
         if (progress >= 100) // Check if the progress reaches 100%
         {
-            //playGameWin();
+            playGameWin();
             showMessageBoxMiniGame("🥳🤩¡Felicidades! Has derrotado a todos los jefes del juego", 3);
             progress = 0; // Reset progress after defeating all bosses
             currentQuestionIndex = 0; // Reset index 

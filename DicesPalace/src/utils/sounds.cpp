@@ -39,3 +39,13 @@ void playTypewritter(){
     PlaySound(NULL, 0, 0);
     PlaySound(TEXT("../assets/sounds/sound-typewritter.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 };
+//Play game win sound effect
+void playGameWin(){
+    PlaySound(NULL, 0, 0);
+    PlaySound(TEXT("../assets/sounds/game-win.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+};
+//Play game win sound effect
+void playStory(){
+    PlaySound(NULL, 0, 0);
+    PlaySound(TEXT("../assets/sounds/story.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+};

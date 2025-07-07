@@ -77,9 +77,9 @@ void showMenu()
 
     // Options
     string opt1 = "⪢ Empezar";
-    string opt2 = "Presiona Enter para empezar el juego";
-/*     string opt3 = "3. Nivel 3";
-    string opt4 = "4. Nivel 4"; */
+    string opt2 = "⪢ Historia";
+    string opt3 = "Empezar [Press Enter]       Historia [Press h]";
+    //string opt4 = "4. Nivel 4";
     string opt5 = "ESC. Salir del juego";
     string prompt = "";
 
@@ -102,13 +102,14 @@ void showMenu()
     moveCursor(x + (boxWidth - opt2.size()) / 2, currentY++);
     cout << opt2;
 
-/*     moveCursor(x + (boxWidth - opt3.size()) / 2, currentY++);
+    moveCursor(x + (boxWidth - opt3.size()) / 2, currentY + 2);
+    setColor(8); // Gray color
     cout << opt3;
 
-    moveCursor(x + (boxWidth - opt4.size()) / 2, currentY++);
+/*     moveCursor(x + (boxWidth - opt4.size()) / 2, currentY++);
     cout << opt4; */
 
-    moveCursor(x + (boxWidth - opt5.size()) / 2, currentY + 2);
+    moveCursor(x + (boxWidth - opt5.size()) / 2, currentY + 4);
     setColor(12); // Bright red color for the exit option
     cout << opt5;
 

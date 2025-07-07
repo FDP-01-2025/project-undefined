@@ -9,6 +9,7 @@
 #include "levels/level3.h"
 #include "levels/level4.h"
 #include "./include/utils/sounds.h"
+#include "./include/utils/story.h"
 
 using namespace std;
 
@@ -31,19 +32,15 @@ int main()
 
         switch (option)
         {
+        //Enter   
         case 13:
             quitGame = Level1();
             break;
-       /*  case '2':
-            quitGame = Level2();
+        // Key h    
+        case 104:
+            quitGame = showStory();
             break;
-        case '3':
-            quitGame = Level3();
-            break;
-         case '4':
-            quitGame = Level4();
-            break;     */
-        // ESC key
+        // ESC    
         case 27:
             quitGame = true;
             break;

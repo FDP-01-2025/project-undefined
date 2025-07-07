@@ -30,6 +30,8 @@ set(SOURCES
     "src/utils/consoleUtils.cpp"
     "src/utils/menu.cpp"
     "src/utils/sounds.cpp"
+    "src/utils/story.cpp"
+
 
 )
 

@@ -17,4 +17,8 @@ void playBossGameOver();
 void playLvlPass();
 //Play typewritter sound effect
 void playTypewritter();
+//Play game win sound effect
+void playGameWin();
+//Play story sound effect
+void playStory();
 #endif
