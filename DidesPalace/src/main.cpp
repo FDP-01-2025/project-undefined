@@ -16,11 +16,10 @@ int main()
 {
     // Allows showing special characters
     SetConsoleOutputCP(CP_UTF8);
-
-    // This code block runs continuously unless ESC is pressed
-    playMenuMusic();
     while (true)
     {
+        // This code block runs continuously unless ESC is pressed
+        playMenuMusic();
         system("cls");
         showMenu();
 
@@ -32,10 +31,10 @@ int main()
 
         switch (option)
         {
-        case '1':
+        case 13:
             quitGame = Level1();
             break;
-        case '2':
+       /*  case '2':
             quitGame = Level2();
             break;
         case '3':
@@ -43,7 +42,7 @@ int main()
             break;
          case '4':
             quitGame = Level4();
-            break;    
+            break;     */
         // ESC key
         case 27:
             quitGame = true;

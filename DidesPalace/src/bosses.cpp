@@ -141,7 +141,7 @@ void showMessageBoxMiniGame(const string &message, int color)
     }
     else if (color == 3)
     {
-        background = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY;
+        background = BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY;
     }
 
     WORD textColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
@@ -244,7 +244,7 @@ void drawColoredProgressBar(int x, int y, int progress)
 }
 
 // Main function for the RPG boss battle system
-void bossBattleRPG(bool (*minigame)(int, int))
+bool bossBattleRPG(bool (*minigame)(int, int))
 { 
     bossHP = 100;
     int playerHP = 100;
@@ -326,7 +326,6 @@ void bossBattleRPG(bool (*minigame)(int, int))
                 }
                 playSuccess();
                 showMessageBoxMiniGame("😄 ¡Has acertado el minijuego! El jefe pierde 25 puntos de vida 😄", 1);
-                
             }
             else
             {
@@ -347,7 +346,10 @@ void bossBattleRPG(bool (*minigame)(int, int))
         {
             playBossGameOver();
             showMessageBox("¡Has huido de la batalla!");
-            return;
+            progress = 0; // Reset progress on fleeing
+            //Back to main menu
+            return false; // Return to main menu
+            
         }
         else
         {
@@ -359,7 +361,8 @@ void bossBattleRPG(bool (*minigame)(int, int))
         {
             playBossGameOver();
             showMessageBoxMiniGame("GAME OVER - Has sido derrotado...", 2);
-            exit(0);
+            progress = 0; // Reset progress after defeating all bosses
+            return false;
         }
     }
 
@@ -372,7 +375,8 @@ void bossBattleRPG(bool (*minigame)(int, int))
         if (progress >= 100) // Check if the progress reaches 100%
         {
             showMessageBoxMiniGame("🥳🤩¡Felicidades! Has derrotado a todos los jefes del juego", 3);
-            exit(0); // Exit the game after defeating all bosses
+            progress = 0; // Reset progress after defeating all bosses
+            return false;
         }
     }
 }

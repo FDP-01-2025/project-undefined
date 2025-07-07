@@ -73,6 +73,11 @@ bool playSpotDifference(int posX, int posY) {
     // Clear screen before drawing
     system("cls");
 
+    int numQuestion = currentDifferenceIndex + 1;
+    showAnimatedMessage("<<<< ENCUENTRA LA DIFERENCIA - Oración #" + to_string(numQuestion) + " >>>>" + "\nEncuentra la letra o palabra diferente", 50, 1500);
+
+    playBossMusic();
+
     // Calculate coordinates to center the game frame
     int consoleWidth = getConsoleWidth();
     int consoleHeight = getConsoleHeight();
@@ -84,7 +89,6 @@ bool playSpotDifference(int posX, int posY) {
     drawFrame(startX, startY, WIDTH , HEIGHT, " ENCUENTRA LA DIFERENCIA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
-    playBossMusic();
     // Check if we've shown all differences
     if (currentDifferenceIndex >= sizeof(DIFERENCIAS) / sizeof(DIFERENCIAS[0])) {
         currentDifferenceIndex = 0; // Reset index for replayability

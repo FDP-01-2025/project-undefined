@@ -7,4 +7,4 @@ extern int progress; // For big boss battles
 
 bool startBossBattle();
 bool fightRegularEnemy();
-void bossBattleRPG(bool (*minigame)(int, int));
+bool bossBattleRPG(bool (*minigame)(int, int));

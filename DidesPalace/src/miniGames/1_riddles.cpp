@@ -81,7 +81,8 @@ bool playriddles(int posX, int posY) {
 
     // Funcion to show an animated message (Title of the game)
     int numQuestion = currentQuestionIndex + 1;
-    showAnimatedMessage("<<<< RIDDLES GAME - Pregunta #" + to_string(numQuestion) + " >>>>" + "\nAdivina las respuestas correctas", 40, 1500);
+    showAnimatedMessage("<<<< RIDDLES GAME - Pregunta #" + to_string(numQuestion) + " >>>>" + "\nAdivina las respuestas correctas", 50, 1500);
+
     playBossMusic();
     // Calculate coordinates to center the game frame
     int consoleWidth = getConsoleWidth();

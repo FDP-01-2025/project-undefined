@@ -105,14 +105,15 @@ bool playNumberSort(int posX, int posY)
 
     // Clear area for our frames
     system("cls");
+    int numQuestion = currentQuestionIndex + 1;
+    showAnimatedMessage("<<<< NUMBER SORT - Lista #" + to_string(numQuestion) + " >>>>" + "\nOrdena la lista de números lo más rápido que puedas", 50, 1500);
+    playBossMusic();
 
     // Draw main container frame (green)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10); // Green text
     drawFrame(posX, posY, 60, 20, " ORDENAR NUMEROS (Separalos con '-')");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
-
-    playBossMusic();
     // Only shuffle once at the beginning
     if (!LIST_RANDOM_INICIALIZED)
     {

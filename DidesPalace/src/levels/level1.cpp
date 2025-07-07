@@ -33,8 +33,9 @@ bool Level1()
     loadMazeFromFile(maze, "data/levels/level1_map.txt");
 
     cout << "\n";
-    string title = "========= LEVEL 1 =========\n";
-    moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
+    setColor(2); // Set color for the title
+    string title = "========= ＮＩＶＥＬ １ =========\n";
+    moveCursor((WINDOW_WIDHT - title.size()) / 2, 3);
     cout << title;
     // Draw initial maze
     // Parameters passed: Maze instance and the color of the maze walls
@@ -61,9 +62,15 @@ bool Level1()
               updatePlayerStats(maze); // updates only the right side (current position and controls)
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
-                bossBattleRPG(playriddles);
-                Level2();
-                return false; // If player survives, level ends
+                bool nextLevel = bossBattleRPG(playriddles);
+
+                if(nextLevel) {
+                    return Level2();
+                } else {
+                    // If the player loses, return to main menu
+                    return false; // Return false to indicate game over
+                }
+                
             }
         }
         

@@ -34,7 +34,8 @@ bool Level3()
 
     // Title design
     cout << "\n";
-    string title = "========= LEVEL 3 =========\n";
+    setColor(1); // Set color for the title
+    string title = "========= ＮＩＶＥＬ ３ =========\n";
     moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
     cout << title;
     // Draw initial maze
@@ -61,9 +62,14 @@ bool Level3()
             updatePlayerStats(maze); // updates only the right side (current position and controls)
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
-                bossBattleRPG(playNumberSort);
-                Level4();
-                return false; // If player survives, level ends
+                bool nextLevel = bossBattleRPG(playNumberSort);
+
+                if(nextLevel) {
+                    return Level4();
+                } else {
+                    // If the player loses, return to main menu
+                    return false; // Return false to indicate game over
+                }
             }
         }
         

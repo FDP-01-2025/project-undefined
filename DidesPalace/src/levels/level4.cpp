@@ -33,7 +33,8 @@ bool Level4()
 
     // Title design
     cout << "\n";
-    string title = "========= LEVEL 4 =========\n";
+    setColor(11); // Set color for the title
+    string title = "========= ＮＩＶＥＬ ４ =========\n";
     moveCursor((WINDOW_WIDHT - title.size()) / 2, 0);
     cout << title;
 
@@ -68,7 +69,7 @@ bool Level4()
            // If player reaches the boss (B), start minigame
             if (maze.grid[maze.playerY][maze.playerX] == 'B') // If reaches boss
             {
-                bossBattleRPG(playKeySmash); // Call Key Smash minigame
+                bossBattleRPG(playKeySmash);
                 return false;
             }
         }
