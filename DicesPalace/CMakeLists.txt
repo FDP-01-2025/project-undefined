@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(DidesPalace)
+project(DicesPalace)
 
 # Configuración básica
 set(CMAKE_CXX_STANDARD 17)
@@ -34,9 +34,9 @@ set(SOURCES
 )
 
 # Crear el ejecutable principal
-add_executable(DidesPalace ${SOURCES})
+add_executable(DicesPalace ${SOURCES})
 # Se especifica que es aplicacion de consola
-target_link_libraries(DidesPalace PRIVATE mingw32) 
+target_link_libraries(DicesPalace PRIVATE mingw32) 
 
 #Copia carpeta data al directorio de salida
 file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${EXECUTABLE_OUTPUT_PATH})
@@ -44,7 +44,7 @@ file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
 #Configuraciones específicas para Windows
 if(WIN32)
-    target_link_libraries(DidesPalace PRIVATE winmm)
+    target_link_libraries(DicesPalace PRIVATE winmm)
 endif()
 
 message(STATUS "SOURCES: ${SOURCES}")
