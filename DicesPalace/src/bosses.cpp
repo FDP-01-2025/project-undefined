@@ -3,6 +3,7 @@
 #include <string>                       // String handling
 #include <windows.h>                    // Windows console functions
 #include <conio.h>                      // For key capture
+#include <string>                       // For string manipulation
 #include "minigames/2_spotDifference.h" // Included minigame
 #include "utils/consoleUtils.h"         // Custom console utilities
 #include "../include/bosses.h"          // For boss battle handling
@@ -15,6 +16,7 @@ const int FRAME_HEIGHT = 35; // Battle frame height
 int bossHP = 100;            // Changed from 1 to 100
 int ronda = 1;               // Round counter
 int progress = 0;            // Progress for big boss battles
+int currentQuestionIndex = 0;
 
 // ================= Visual Functions ===================
 
@@ -62,15 +64,39 @@ void drawBattleFrame()
 }
 
 // Draws the message box frame shown to the user (right-aligned version)
-void showMessageBox(const string &message)
+void showMessageBox(const string &message, int color)
 {
-    int boxWidth = 45; // Reduced width to not take too much space
+    int boxWidth = 55; // Reduced width to not take too much space
     int boxHeight = 7;
-    int x = 35; // Right-aligned X position (adjusted for full screen)
-    int y = 12; // Same Y position (vertically centered)
+    int consoleWidth = getConsoleWidth();
+    int consoleHeight = getConsoleHeight();
 
+    int x = (consoleWidth - boxWidth) / 2;
+    int y = (consoleHeight - boxHeight) / 2;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+   // Set background color based on the color parameter
+    // 1 = green, 2 = red, 3 = default (white background)
+    int background;
+    if (color == 1)
+    {
+        background = BACKGROUND_RED | BACKGROUND_INTENSITY; ;
+    }
+    else if (color == 2)
+    {
+        background = BACKGROUND_RED | BACKGROUND_GREEN;
+    }
+
+    SetConsoleTextAttribute(hConsole, background | 7);
+    // Fill background of the message box
+    for (int i = 0; i < boxHeight; ++i)
+    {
+        for (int j = 0; j < boxWidth; ++j)
+        {
+            moveCursor(x + j, y + i);
+            cout << " ";
+        }
+    }
 
     // Draw message box frame
     for (int i = 0; i < boxWidth; ++i)
@@ -96,7 +122,6 @@ void showMessageBox(const string &message)
     moveCursor(x + boxWidth - 1, y + boxHeight - 1);
     cout << "+";
 
-    // Message inside box (in Spanish)
     moveCursor(x + 2, y + 2);
     cout << message;
 
@@ -197,7 +222,7 @@ void showMessageBoxMiniGame(const string &message, int color)
 }
 
 // Shows ASCII art of the boss from file
-void showBossArt(const string &path, int x, int y)
+void showBossArt(const string &path, int x, int y, int color)
 {
     ifstream file(path);
     string line;
@@ -205,9 +230,13 @@ void showBossArt(const string &path, int x, int y)
     while (getline(file, line))
     {
         moveCursor(x, y + offsetY);
+        setColor(color); // Set color for the boss art
         cout << line;
         offsetY++;
     }
+    moveCursor(x, y + offsetY + 1); // Move cursor below the art
+    cout << "¡No podrás vencerme! (ง︡'-'︠)ง...";
+    setColor(7); // Reset color to default
 }
 
 // Displays a progress bar with color
@@ -227,7 +256,7 @@ void drawColoredProgressBar(int x, int y, int progress)
         color = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 
     moveCursor(x, y + 1);
-    cout << "Progreso: [";
+    cout << "Progreso del juego: [";
 
     // Colored progress bar
     SetConsoleTextAttribute(hConsole, color);
@@ -244,7 +273,7 @@ void drawColoredProgressBar(int x, int y, int progress)
 }
 
 // Main function for the RPG boss battle system
-bool bossBattleRPG(bool (*minigame)(int, int))
+bool bossBattleRPG(bool (*minigame)(int, int), const std::string& bossArt, int color)
 { 
     bossHP = 100;
     int playerHP = 100;
@@ -261,7 +290,7 @@ bool bossBattleRPG(bool (*minigame)(int, int))
         system("cls");
         drawBattleFrame();
 
-        showBossArt("data/bosses/boss2.txt", 25, 4); // Boss art
+        showBossArt(bossArt, 40, 5, color); // Boss art
 
         // UI in Spanish
         int x = 90;
@@ -277,7 +306,7 @@ bool bossBattleRPG(bool (*minigame)(int, int))
         moveCursor(x, y + 7); cout << "║ HP: " << setw(3) << setfill(' ') << playerHP << "        ║";
         moveCursor(x, y + 8); cout << "╚════════════════╝";
 
-        drawColoredProgressBar(40, 5, progress);
+        drawColoredProgressBar(50, 30, progress);
 
         // Combat options
         int optX = 35;
@@ -340,13 +369,14 @@ bool bossBattleRPG(bool (*minigame)(int, int))
             playerHP += 5;
             if (playerHP > 100)
                 playerHP = 100;
-            showMessageBox("Te has defendido y recuperado 5 de vida.");
+            showMessageBox("Te has defendido y recuperado 5 de vida (>‿◠)✌", 1);
         }
         else if (opcion == '3')
         {
             playBossGameOver();
-            showMessageBox("¡Has huido de la batalla!");
+            showMessageBox("¡Has huido de la batalla! ( ˘︹˘ )", 2);
             progress = 0; // Reset progress on fleeing
+            currentQuestionIndex = 0; // Reset index
             //Back to main menu
             return false; // Return to main menu
             
@@ -354,14 +384,15 @@ bool bossBattleRPG(bool (*minigame)(int, int))
         else
         {
             playError();
-            showMessageBox("Opción no válida.");
+            showMessageBox("Opción no válida ⁀⊙﹏☉⁀", 2);
         }
 
         if (playerHP <= 0)
         {
             playBossGameOver();
-            showMessageBoxMiniGame("GAME OVER - Has sido derrotado...", 2);
+            showMessageBoxMiniGame("GAME OVER - Has sido derrotado... (≖᷆︵︣≖)👎", 2);
             progress = 0; // Reset progress after defeating all bosses
+            currentQuestionIndex = 0; // Reset index
             return false;
         }
     }
@@ -372,10 +403,13 @@ bool bossBattleRPG(bool (*minigame)(int, int))
         showMessageBoxMiniGame("🥳¡VICTORIA! - El jefe del nivel ha sido vencido.🥳", 1);
         progress += 25;      // Increment progress for big boss battles
         bossHP = 100;        // Reset boss HP for next battle
+        currentQuestionIndex = 0; // Reset index for next minigame
         if (progress >= 100) // Check if the progress reaches 100%
         {
+            //playGameWin();
             showMessageBoxMiniGame("🥳🤩¡Felicidades! Has derrotado a todos los jefes del juego", 3);
             progress = 0; // Reset progress after defeating all bosses
+            currentQuestionIndex = 0; // Reset index 
             return false;
         }
     }

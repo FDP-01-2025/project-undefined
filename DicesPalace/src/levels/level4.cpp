@@ -69,7 +69,7 @@ bool Level4()
            // If player reaches the boss (B), start minigame
             if (maze.grid[maze.playerY][maze.playerX] == 'B') // If reaches boss
             {
-                bossBattleRPG(playKeySmash);
+                bossBattleRPG(playKeySmash, "data/bosses/boss4.txt", 11);
                 return false;
             }
         }

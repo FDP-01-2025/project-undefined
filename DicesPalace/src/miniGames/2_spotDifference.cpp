@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <windows.h>
+#include <bosses.h>
 #include "../include/utils/consoleUtils.h"
 #include "../include/utils/sounds.h"
 
@@ -21,8 +22,6 @@ namespace {
         {"  El leon ruge en la selva\n                              ║    El leon ruje en la selva", "ruje"},
         {"  La casa esta lejos\n                              ║    Casa esta lejos", "La"}
     };
-
-    int currentDifferenceIndex = 0;
 
     // Normalization for case-insensitive and space-ignoring comparison
     bool checkAnswer(const string& answer, const string& correct) {
@@ -73,7 +72,7 @@ bool playSpotDifference(int posX, int posY) {
     // Clear screen before drawing
     system("cls");
 
-    int numQuestion = currentDifferenceIndex + 1;
+    int numQuestion = currentQuestionIndex + 1;
     showAnimatedMessage("<<<< ENCUENTRA LA DIFERENCIA - Oración #" + to_string(numQuestion) + " >>>>" + "\nEncuentra la letra o palabra diferente", 50, 1500);
 
     playBossMusic();
@@ -90,12 +89,12 @@ bool playSpotDifference(int posX, int posY) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
     // Check if we've shown all differences
-    if (currentDifferenceIndex >= sizeof(DIFERENCIAS) / sizeof(DIFERENCIAS[0])) {
-        currentDifferenceIndex = 0; // Reset index for replayability
+    if (currentQuestionIndex >= sizeof(DIFERENCIAS) / sizeof(DIFERENCIAS[0])) {
+        currentQuestionIndex = 0; // Reset index for replayability
         return true;
     }
 
-    auto diferencia = DIFERENCIAS[currentDifferenceIndex];
+    auto diferencia = DIFERENCIAS[currentQuestionIndex];
 
     // === Question display frame (red) ===
     int questionFrameX = startX + 5;
@@ -132,7 +131,7 @@ bool playSpotDifference(int posX, int posY) {
         drawFrame(resultFrameX, resultFrameY, 60, 3, " RESULTADO ");
         centerTextInFrame(resultFrameX, resultFrameY, 60, 3, "¡Correcto!");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-        currentDifferenceIndex++; // Advance to next difference
+        currentQuestionIndex++; // Advance to next difference
         return true;
     } else {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);

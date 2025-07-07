@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <iostream>
 #include <windows.h>
+#include "bosses.h"
 #include "../include/utils/consoleUtils.h"
 #include "../include/utils/sounds.h"
 
@@ -44,9 +45,8 @@ namespace
     // Random order of Number list
     vector<pair<string, string>> LIST_RANDOM;
     bool LIST_RANDOM_INICIALIZED = false;
-    // variable to move the index
-    int currentQuestionIndex = 0;
 
+    
     bool checkAnswer(const string &answer, const string &correct)
     {
         string normalized = answer;

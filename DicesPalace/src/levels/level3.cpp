@@ -62,7 +62,7 @@ bool Level3()
             updatePlayerStats(maze); // updates only the right side (current position and controls)
 
             if (maze.grid[maze.playerY][maze.playerX] == 'B') {
-                bool nextLevel = bossBattleRPG(playNumberSort);
+                bool nextLevel = bossBattleRPG(playNumberSort, "data/bosses/boss3.txt", 1);
 
                 if(nextLevel) {
                     return Level4();

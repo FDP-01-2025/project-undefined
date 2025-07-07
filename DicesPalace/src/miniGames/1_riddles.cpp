@@ -28,7 +28,6 @@ namespace {
     };
 
     // Variable to track question progress
-    int currentQuestionIndex = 0;
 
     bool checkAnswer(const string& answer, const string& correct) {
         string normalized = answer;
