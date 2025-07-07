@@ -42,7 +42,7 @@ file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
 #Configuraciones específicas para Windows
 if(WIN32)
-# Esta vacio
+    target_link_libraries(DidesPalace PRIVATE winmm)
 endif()
 
 message(STATUS "SOURCES: ${SOURCES}")

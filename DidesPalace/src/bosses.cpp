@@ -197,6 +197,8 @@ void showBossArt(const string &path, int x, int y)
 // Main function for the RPG boss battle system
 void bossBattleRPG(bool (*minigame)(int, int))
 {
+        PlaySound(TEXT("../assets/sounds/8-bit-loop.wav"), NULL, SND_FILENAME | SND_ASYNC);
+
     int playerHP = 100;
     bool bossDefeated = false;
 

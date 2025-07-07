@@ -12,6 +12,7 @@ using namespace std;
 
 namespace
 {
+   
     // Number list
     const vector<pair<string, string>> LIST = {
         {"Ordena los siguientes numeros: 3-1-2-4", "1-2-3-4"},
@@ -95,10 +96,12 @@ namespace
         moveCursor(max(frameX + 1, textPosX), textPosY);
         cout << text;
     }
+    
 }
 
 bool playNumberSort(int posX, int posY)
 {
+
     // Clear area for our frames
     system("cls");
 
