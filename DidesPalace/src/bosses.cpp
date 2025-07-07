@@ -7,6 +7,7 @@
 #include "utils/consoleUtils.h"         // Custom console utilities
 #include "../include/bosses.h"          // For boss battle handling
 #include <iomanip>                      // To format console output (especially with cout) in a more precise and readable way.
+#include "./include/utils/sounds.h"     // For sounds effects
 using namespace std;
 
 const int FRAME_WIDTH = 120; // Battle frame width
@@ -244,9 +245,7 @@ void drawColoredProgressBar(int x, int y, int progress)
 
 // Main function for the RPG boss battle system
 void bossBattleRPG(bool (*minigame)(int, int))
-{
-    PlaySound(TEXT("../assets/sounds/8-bit-loop.wav"), NULL, SND_FILENAME | SND_ASYNC);
-
+{ 
     int playerHP = 100;
     bool bossDefeated = false;
 
@@ -257,6 +256,7 @@ void bossBattleRPG(bool (*minigame)(int, int))
 
     while (bossHP > 0 && playerHP > 0)
     {
+        playBossMusic();
         system("cls");
         drawBattleFrame();
 
@@ -314,7 +314,7 @@ void bossBattleRPG(bool (*minigame)(int, int))
 
             // Execute minigame
             bool won = minigame(15, 15);
-
+            
             if (won)
             {
                 bossHP -= 25; // Reduce 25 HP instead of instant defeat
@@ -323,16 +323,20 @@ void bossBattleRPG(bool (*minigame)(int, int))
                     bossHP = 0;
                     bossDefeated = true;
                 }
+                playSuccess();
                 showMessageBoxMiniGame("😄 ¡Has acertado el minijuego! El jefe pierde 25 puntos de vida 😄", 1);
+                
             }
             else
             {
                 playerHP -= 20;
+                playError();
                 showMessageBoxMiniGame("😭 Fallaste el minijuego... el jefe te ha golpeado 😭", 2);
             }
         }
         else if (opcion == '2')
         {
+            playHeal();
             playerHP += 5;
             if (playerHP > 100)
                 playerHP = 100;
@@ -340,16 +344,19 @@ void bossBattleRPG(bool (*minigame)(int, int))
         }
         else if (opcion == '3')
         {
+            playBossGameOver();
             showMessageBox("¡Has huido de la batalla!");
             return;
         }
         else
         {
+            playError();
             showMessageBox("Opción no válida.");
         }
 
         if (playerHP <= 0)
         {
+            playBossGameOver();
             showMessageBoxMiniGame("GAME OVER - Has sido derrotado...", 2);
             exit(0);
         }
@@ -357,6 +364,7 @@ void bossBattleRPG(bool (*minigame)(int, int))
 
     if (bossDefeated)
     {
+        playLvlPass();
         showMessageBoxMiniGame("🥳¡VICTORIA! - El jefe del nivel ha sido vencido.🥳", 1);
         progress += 25;      // Increment progress for big boss battles
         bossHP = 100;        // Reset boss HP for next battle

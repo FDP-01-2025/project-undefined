@@ -8,10 +8,13 @@
 #include "levels/level4.h"
 #include <utils/consoleUtils.h>
 #include "./minigames/4_keySmash.h"
+#include "../include/utils/sounds.h"
+
 using namespace std;
 
 bool Level4()
 {
+    playMenuMusic();
     // Hide cursor
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;

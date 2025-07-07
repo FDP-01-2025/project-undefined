@@ -9,10 +9,13 @@
 #include "levels/level3.h"
 #include "levels/level4.h"
 #include "./minigames/3_numberSort.h"
+#include "../include/utils/sounds.h"
+
 using namespace std;
 
 bool Level3()
 {
+    playMenuMusic();
     // Hide cursor
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
@@ -61,7 +64,6 @@ bool Level3()
                 bossBattleRPG(playNumberSort);
                 Level4();
                 return false; // If player survives, level ends
-               
             }
         }
         

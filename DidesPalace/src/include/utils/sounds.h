@@ -5,6 +5,8 @@
 void playSuccess();
 //Play error sound effect
 void playError();
+//Play heal sound effect
+void playHeal();
 //Play the music menu
 void playMenuMusic();
 //Play the boss music 

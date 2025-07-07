@@ -9,10 +9,13 @@
 #include "levels/level2.h"
 #include <utils/consoleUtils.h>
 #include "./minigames/1_riddles.h"
+#include "../include/utils/sounds.h"
+
 using namespace std;
 
 bool Level1()
 {
+    playMenuMusic();
     // Hide cursor
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_CURSOR_INFO cursorInfo;
