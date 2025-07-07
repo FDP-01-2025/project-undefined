@@ -29,6 +29,8 @@ set(SOURCES
     "src/levels/level4.cpp"
     "src/utils/consoleUtils.cpp"
     "src/utils/menu.cpp"
+    "src/utils/sounds.cpp"
+
 )
 
 # Crear el ejecutable principal

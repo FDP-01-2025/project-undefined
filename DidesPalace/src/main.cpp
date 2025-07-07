@@ -8,6 +8,7 @@
 #include "levels/level2.h"
 #include "levels/level3.h"
 #include "levels/level4.h"
+#include "./include/utils/sounds.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
 
     // This code block runs continuously unless ESC is pressed
+    playMenuMusic();
     while (true)
     {
         system("cls");
