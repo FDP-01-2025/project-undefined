@@ -15,5 +15,6 @@ void playBossMusic();
 void playBossGameOver();
 //Play the level pass sound effect
 void playLvlPass();
-
+//Play typewritter sound effect
+void playTypewritter();
 #endif

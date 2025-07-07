@@ -34,3 +34,8 @@ void playLvlPass(){
     PlaySound(NULL, 0, 0);
     PlaySound(TEXT("../assets/sounds/sound-lvl-pass.wav"), NULL, SND_FILENAME | SND_ASYNC);
 };
+//Play typewritter sound effect
+void playTypewritter(){
+    PlaySound(NULL, 0, 0);
+    PlaySound(TEXT("../assets/sounds/sound-typewritter.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+};

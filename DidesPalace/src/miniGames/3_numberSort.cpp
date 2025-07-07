@@ -7,6 +7,7 @@
 #include <iostream>
 #include <windows.h>
 #include "../include/utils/consoleUtils.h"
+#include "../include/utils/sounds.h"
 
 using namespace std;
 
@@ -110,6 +111,8 @@ bool playNumberSort(int posX, int posY)
     drawFrame(posX, posY, 60, 20, " ORDENAR NUMEROS (Separalos con '-')");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7); // Reset to default
 
+
+    playBossMusic();
     // Only shuffle once at the beginning
     if (!LIST_RANDOM_INICIALIZED)
     {

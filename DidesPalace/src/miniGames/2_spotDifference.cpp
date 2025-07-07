@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <windows.h>
 #include "../include/utils/consoleUtils.h"
+#include "../include/utils/sounds.h"
 
 using namespace std;
 
@@ -83,6 +84,7 @@ bool playSpotDifference(int posX, int posY) {
     drawFrame(startX, startY, WIDTH , HEIGHT, " ENCUENTRA LA DIFERENCIA ");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
+    playBossMusic();
     // Check if we've shown all differences
     if (currentDifferenceIndex >= sizeof(DIFERENCIAS) / sizeof(DIFERENCIAS[0])) {
         currentDifferenceIndex = 0; // Reset index for replayability

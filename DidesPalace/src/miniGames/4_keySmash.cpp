@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include "../include/utils/consoleUtils.h"
 #include "../include/bosses.h" // For boss battle handling
+#include "../include/utils/sounds.h"
+
 using namespace std;
 
 // Allows access to Windows console (cursor and color manipulation)
@@ -71,7 +73,8 @@ bool playKeySmash(int posX, int posY)
         + "\n\n➣ Letras: " + to_string(numKeys) 
         + "\n➣ Velocidad: " + to_string(speed) + " ms" + 
         + "\n➣ Objetivo: Llega a " + to_string(scoreToWin) + " puntos para ganar la ronda");
-
+        
+        playBossMusic();
         // Draws the frame one pixel before to enclose the game area
         drawFrame(startX - 1, startY - 1);
 
@@ -151,6 +154,7 @@ bool playKeySmash(int posX, int posY)
                     // If letter reaches bottom of game area, it's considered a failure
                     if (keys[i].y > startY + HEIGHT)
                     {
+                        playError();
                         Sleep(2000); // Wait for 2 second before ending the game
                         moveCursor(startX, startY + HEIGHT + 5);
                         system("pause");
@@ -170,7 +174,7 @@ bool playKeySmash(int posX, int posY)
             {
                 // Wait for 2 seconds before continuing
                 Sleep(2000);
-
+                playSuccess();
                 setColor(10);
                 moveCursor(startX, startY + HEIGHT + 3);
                 cout << "¡Felicidades pasaste la ronda!";

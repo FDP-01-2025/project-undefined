@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <utils/consoleUtils.h>
+#include "utils/sounds.h"
 
 // Function to move the cursor
 void moveCursor(int x, int y)
@@ -71,7 +72,8 @@ int getConsoleHeight()
 
 /// Displays a centered message with typewriter-like animation (multi-line support)
 void showAnimatedMessage(const std::string &message, int delay, int waitAfter)
-{
+{   
+    playTypewritter();
     // Clear screen
     system("cls"); 
 
