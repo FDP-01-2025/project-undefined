@@ -13,7 +13,7 @@ using namespace std;
 namespace
 {
     // Number list
-    const vector<pair<string, string>> LISTA = {
+    const vector<pair<string, string>> LIST = {
         {"Ordena los siguientes numeros: 3-1-2-4", "1-2-3-4"},
         {"Ordena los siguientes numeros: 5-3-7-1", "1-3-5-7"},
         {"Ordena los siguientes numeros: 20-10-5-15", "5-10-15-20"},
@@ -39,7 +39,7 @@ namespace
         {"Ordena los siguientes numeros: 6-3-9-12", "3-6-9-12"},
         {"Ordena los siguientes numeros: 24-16-32-8", "8-16-24-32"}};
 
-    //Random order of Number list 
+    // Random order of Number list
     vector<pair<string, string>> LIST_RANDOM;
     bool LIST_RANDOM_INICIALIZED = false;
     // variable to move the index
@@ -110,7 +110,7 @@ bool playNumberSort(int posX, int posY)
     // Only shuffle once at the beginning
     if (!LIST_RANDOM_INICIALIZED)
     {
-        LIST_RANDOM = LISTA; // Copy from original
+        LIST_RANDOM = LIST; // Copy from original
         unsigned seed = static_cast<unsigned>(chrono::system_clock::now().time_since_epoch().count());
         shuffle(LIST_RANDOM.begin(), LIST_RANDOM.end(), default_random_engine(seed));
         LIST_RANDOM_INICIALIZED = true;
@@ -156,12 +156,31 @@ bool playNumberSort(int posX, int posY)
         // Update countdown only if it has changed
         if (remainingSeconds != lastShown && remainingSeconds >= 0)
         {
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
-            moveCursor(answerFrameX + 60, answerFrameY - 10);
-            cout << "                     "; // Clear previous text
-            moveCursor(answerFrameX + 60, answerFrameY - 10);
-            cout << remainingSeconds << " segundos restantes...";
-            lastShown = remainingSeconds;
+            if (remainingSeconds >= 10)
+            {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+                moveCursor(answerFrameX + 60, answerFrameY - 10);
+                cout << "                            "; // Clear previous text
+                moveCursor(answerFrameX + 60, answerFrameY - 10);
+                cout << remainingSeconds << " segundos restantes...";
+                lastShown = remainingSeconds;
+            }
+            else if (remainingSeconds > 5)
+            {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9);
+                moveCursor(answerFrameX + 60, answerFrameY - 10);
+                cout << "                              "; // Clear previous text
+                moveCursor(answerFrameX + 60, answerFrameY - 10);
+                cout << remainingSeconds << " segundos restantes...";
+                lastShown = remainingSeconds;
+            }else{
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+                moveCursor(answerFrameX + 60, answerFrameY - 10);
+                cout << "                              "; // Clear previous text
+                moveCursor(answerFrameX + 60, answerFrameY - 10);
+                cout << remainingSeconds << " segundos restantes...";
+                lastShown = remainingSeconds;
+            }   
         }
 
         // Show current input
@@ -199,7 +218,7 @@ bool playNumberSort(int posX, int posY)
         {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
             moveCursor(answerFrameX + 60, answerFrameY - 10);
-            cout << "                     "; // Clear previous text
+            cout << "                              "; // Clear previous text
             moveCursor(answerFrameX + 60, answerFrameY - 10);
             cout << "¡Tiempo terminado!\n";
             break;
