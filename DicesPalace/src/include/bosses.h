@@ -3,7 +3,7 @@
 
 // Variables and functions for boss battles in the RPG game
 extern int bossHP;
-extern int round;
+extern int currentRound;
 extern int progress; // For the progress of the game
 extern int currentQuestionIndex;
 
