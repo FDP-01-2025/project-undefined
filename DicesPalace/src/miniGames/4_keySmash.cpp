@@ -58,17 +58,17 @@ bool playKeySmash(int posX, int posY)
 
     while (bossHP > 0)
     {
-        int numKeys = 4 + ronda - 1;
-        int scoreToWin = 30 + (ronda - 1) * 10; // Score needed to win the round
+        int numKeys = 4 + round - 1;
+        int scoreToWin = 30 + (round - 1) * 10; // Score needed to win the round
         // Initialize starting speed
-        int speed = 350 - (ronda - 1) * 40; // Speed decreases as rounds increase
+        int speed = 350 - (round - 1) * 40; // Speed decreases as rounds increase
         if (speed < 80)
         {
             speed = 80; // Minimum speed limit
         }
 
         // Funcion to show an animated message (Title of the game)
-        showAnimatedMessage("<<<< SMASH KEY - RONDA " + to_string(ronda) + " >>>>" 
+        showAnimatedMessage("<<<< SMASH KEY - RONDA " + to_string(round) + " >>>>" 
         + "\nPresiona las teclas correctas antes de que lleguen al final" 
         + "\n\n➣ Letras: " + to_string(numKeys) 
         + "\n➣ Velocidad: " + to_string(speed) + " ms" + 
@@ -80,7 +80,7 @@ bool playKeySmash(int posX, int posY)
 
         moveCursor(startX, startY - 6);
         setColor(6);
-        cout << "    <<<<< 𝑺𝒎𝒂𝒔𝒉 𝒌𝒆𝒚 - " << "𝑹𝒐𝒏𝒅𝒂: " << ronda << " >>>>>";
+        cout << "    <<<<< 𝑺𝒎𝒂𝒔𝒉 𝒌𝒆𝒚 - " << "𝑹𝒐𝒏𝒅𝒂: " << round << " >>>>>";
         setColor(15);
         moveCursor(startX, startY - 4);
         cout << "• Cantidad de letras: " << numKeys;
@@ -179,9 +179,8 @@ bool playKeySmash(int posX, int posY)
                 moveCursor(startX, startY + HEIGHT + 3);
                 cout << "¡Felicidades pasaste la ronda!";
                 moveCursor(startX, startY + HEIGHT + 4);
-                cout << "Presiona una tecla para continuar...";
-                _getch();         // Wait for player to press a key
-                ronda++;          // Increase round number
+                system("pause");
+                round++;          // Increase round number
                 scoreToWin += 10; // Increase score needed to win next round
 
                 delete[] keys; // Free memory

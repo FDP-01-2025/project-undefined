@@ -14,8 +14,8 @@ using namespace std;
 const int FRAME_WIDTH = 120; // Battle frame width
 const int FRAME_HEIGHT = 35; // Battle frame height
 int bossHP = 100;            // Changed from 1 to 100
-int ronda = 1;               // Round counter
-int progress = 0;            // Progress for big boss battles
+int round = 1;               // Round counter
+int progress = 0;            // For the progress of the game
 int currentQuestionIndex = 0;
 
 // ================= Visual Functions ===================

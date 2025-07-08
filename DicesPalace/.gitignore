@@ -1,7 +1,7 @@
-#Carpetas ocupadas en caso se ocupe compilar con CMake.
-#Carpeta donde se contruye el compilador
+#Folders occupied when compiling.
+#Folder where the compiler is built
 build/
-#Carpeta donde se crear el archivo ejecutable
+#Folder where the executable file is created
 bin/
 
 ##################################################

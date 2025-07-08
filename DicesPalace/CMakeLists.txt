@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(DicesPalace)
 
-# Configuración básica
+# Basic configuration
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Directorio de salida para los ejecutables
+# Output directory for executables
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
-# Incluir directorios
-# Carpeta include (Estan todos los archivos .h)
+# Include directories
+# Include folder (all .h files are included)
 include_directories(src/include)
 
-# Archivos fuente
-# Agregar aqui los archivos nuevos que se vayan creando
+# Source files
+# Add here the new files that are created
 set(SOURCES
     "src/main.cpp"
     "src/maze.cpp"
@@ -35,16 +35,16 @@ set(SOURCES
 
 )
 
-# Crear el ejecutable principal
+# Create the main executable
 add_executable(DicesPalace ${SOURCES})
-# Se especifica que es aplicacion de consola
+# It is specified that it is a console application
 target_link_libraries(DicesPalace PRIVATE mingw32) 
 
-#Copia carpeta data al directorio de salida
+# Copy data folder to the output directory
 file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
 
-#Configuraciones específicas para Windows
+# Windows specific configurations
 if(WIN32)
     target_link_libraries(DicesPalace PRIVATE winmm)
 endif()
