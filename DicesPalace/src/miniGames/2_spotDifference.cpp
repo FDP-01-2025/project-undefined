@@ -126,6 +126,7 @@ bool playSpotDifference(int posX, int posY) {
     int resultFrameX = startX + 5;
     int resultFrameY = startY + 16;
 
+    //The user put the correct answer
     if (isCorrect) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
         drawFrame(resultFrameX, resultFrameY, 60, 3, " RESULTADO ");
@@ -133,7 +134,9 @@ bool playSpotDifference(int posX, int posY) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         currentQuestionIndex++; // Advance to next difference
         return true;
-    } else {
+    } 
+    //The user dont put the correct answer
+    else { 
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
         drawFrame(resultFrameX, resultFrameY, 60, 3, " RESULTADO ");
         string resultText = "Incorrecto. Era: " + diferencia.second;
