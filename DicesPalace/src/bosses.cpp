@@ -412,5 +412,6 @@ bool bossBattleRPG(bool (*minigame)(int, int), const std::string& bossArt, int c
             currentQuestionIndex = 0; // Reset index 
             return false;
         }
+        return true; 
     }
 }
