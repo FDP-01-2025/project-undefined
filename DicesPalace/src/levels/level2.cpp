@@ -15,6 +15,7 @@ using namespace std;
 
 bool Level2()
 {
+    //call the music
     playMenuMusic();
     // Hide cursor
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
