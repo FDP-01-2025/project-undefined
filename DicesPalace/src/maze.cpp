@@ -55,7 +55,7 @@ void loadMazeFromFile(Maze &maze, const char *filePath)
                 maze.playerX = col;
                 maze.playerY = maze.rows;
             }
-            else if (line[col] == 'B')
+            else if (line[col] == 'B') // position of the boss//
             {
                 maze.bossX = col;
                 maze.bossY = maze.rows;
