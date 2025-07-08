@@ -5,8 +5,8 @@
 #include <chrono>
 #include <iostream>
 #include <windows.h>
-#include "utils/consoleUtils.h"
-#include "../include/utils/sounds.h"
+#include "utils/consoleUtils.h" // console adaptation//
+#include "../include/utils/sounds.h" // sounds included// 
 
 using namespace std;
 using namespace std::chrono;
