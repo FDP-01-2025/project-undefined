@@ -15,12 +15,12 @@ const int HEIGHT = 20; // Height of the game area
 // === SPOT THE DIFFERENCE DATABASE CONFIGURATION ===
 namespace {
     const pair<string, string> DIFERENCIAS[6] = {
-        {"  La maromota le dijo hola al dragon que volaba sobre el cielo\n                              ║    La maromota le dijo ola al dragon que volaba sobre el cielo", "ola"},
-        {"  Tengo 15 manzanas en mi canasta\n                              ║    Tengo 16 manzanas en mi canasta", "16"},
-        {"  El perro corrio rapidamente al parque\n                              ║    El can corrio rapidamente al parque", "can"},
-        {"  La luna brilla en el cielo\n                              ║    La luna brila en el cielo", "brila"},
-        {"  El leon ruge en la selva\n                              ║    El leon ruje en la selva", "ruje"},
-        {"  La casa esta lejos\n                              ║    Casa esta lejos", "La"}
+        {"  La maromota le dijo hola al dragon que volaba sobre el cielo\n                              ║    La maromota le dijo ola al dragon que volaba sobre el cielo", "ola"}, //Question 1
+        {"  Tengo 15 manzanas en mi canasta\n                              ║    Tengo 16 manzanas en mi canasta", "16"}, //Question 2
+        {"  El perro corrio rapidamente al parque\n                              ║    El can corrio rapidamente al parque", "can"}, //Question 3
+        {"  La luna brilla en el cielo\n                              ║    La luna brila en el cielo", "brila"}, //Question 4
+        {"  El leon ruge en la selva\n                              ║    El leon ruje en la selva", "ruje"},  //Question 5
+        {"  La casa esta lejos\n                              ║    Casa esta lejos", "La"} //Question 6
     };
 
     // Normalization for case-insensitive and space-ignoring comparison
