@@ -2,13 +2,13 @@
 #include <locale.h>
 #include <windows.h>
 #include <conio.h>
-#include "maze.h"
+#include "maze.h"  // include all the sources//
 #include "player.h"
 #include "bosses.h"
 #include "levels/level1.h"
 #include "levels/level2.h"
 #include <utils/consoleUtils.h>
-#include "./minigames/1_riddles.h"
+#include "./minigames/1_riddles.h" // include minigame function//
 #include "../include/utils/sounds.h"
 
 using namespace std;
